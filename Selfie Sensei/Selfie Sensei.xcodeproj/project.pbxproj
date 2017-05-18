@@ -15,7 +15,8 @@
 		80C0413D1ECD0C0500973CE0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80C0413B1ECD0C0500973CE0 /* LaunchScreen.storyboard */; };
 		80C041481ECD0C0600973CE0 /* Selfie_SenseiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C041471ECD0C0600973CE0 /* Selfie_SenseiTests.swift */; };
 		80C041531ECD0C0600973CE0 /* Selfie_SenseiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C041521ECD0C0600973CE0 /* Selfie_SenseiUITests.swift */; };
-		80E9832A1ECD15F7002898D8 /* Material.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80E983291ECD15F7002898D8 /* Material.framework */; };
+		80C649E01ECD28DC00C4D235 /* Material.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80C649DF1ECD28DC00C4D235 /* Material.framework */; };
+		80E9832D1ECD2155002898D8 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E9832C1ECD2155002898D8 /* CameraViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,7 +51,9 @@
 		80C0414E1ECD0C0600973CE0 /* Selfie SenseiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Selfie SenseiUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		80C041521ECD0C0600973CE0 /* Selfie_SenseiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selfie_SenseiUITests.swift; sourceTree = "<group>"; };
 		80C041541ECD0C0600973CE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		80C649DF1ECD28DC00C4D235 /* Material.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Material.framework; path = Carthage/Build/iOS/Material.framework; sourceTree = "<group>"; };
 		80E983291ECD15F7002898D8 /* Material.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Material.framework; path = ../Carthage/Build/iOS/Material.framework; sourceTree = "<group>"; };
+		80E9832C1ECD2155002898D8 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80E9832A1ECD15F7002898D8 /* Material.framework in Frameworks */,
+				80C649E01ECD28DC00C4D235 /* Material.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +113,7 @@
 				80C0413B1ECD0C0500973CE0 /* LaunchScreen.storyboard */,
 				80C0413E1ECD0C0500973CE0 /* Info.plist */,
 				80C041361ECD0C0500973CE0 /* Selfie_Sensei.xcdatamodeld */,
+				80E9832C1ECD2155002898D8 /* CameraViewController.swift */,
 			);
 			path = "Selfie Sensei";
 			sourceTree = "<group>";
@@ -135,6 +139,7 @@
 		80E983281ECD15F7002898D8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				80C649DF1ECD28DC00C4D235 /* Material.framework */,
 				80E983291ECD15F7002898D8 /* Material.framework */,
 			);
 			name = Frameworks;
@@ -209,6 +214,7 @@
 				TargetAttributes = {
 					80C0412B1ECD0C0500973CE0 = {
 						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = SQ89E7XG9B;
 						ProvisioningStyle = Automatic;
 					};
 					80C041421ECD0C0600973CE0 = {
@@ -277,12 +283,13 @@
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Material.framework",
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "$(SRCROOT)/Carthage/Build/iOS/Material.framework";
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -292,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				80C041381ECD0C0500973CE0 /* Selfie_Sensei.xcdatamodeld in Sources */,
+				80E9832D1ECD2155002898D8 /* CameraViewController.swift in Sources */,
 				80C041321ECD0C0500973CE0 /* ViewController.swift in Sources */,
 				80C041301ECD0C0500973CE0 /* AppDelegate.swift in Sources */,
 			);
@@ -447,6 +455,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = SQ89E7XG9B;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Selfie Sensei/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "uwcse.Selfie-Sensei";
@@ -459,6 +472,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = SQ89E7XG9B;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Selfie Sensei/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "uwcse.Selfie-Sensei";
