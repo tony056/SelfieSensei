@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		80A1CD911ECE787A00502F11 /* SwiftyCam.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80A1CD901ECE787A00502F11 /* SwiftyCam.framework */; };
 		80A1CD931ECF82FD00502F11 /* MotionDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A1CD921ECF82FD00502F11 /* MotionDataHandler.swift */; };
+		80A1CD951ECFA14500502F11 /* PositionCorrector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A1CD941ECFA14500502F11 /* PositionCorrector.swift */; };
 		80C041301ECD0C0500973CE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C0412F1ECD0C0500973CE0 /* AppDelegate.swift */; };
 		80C041321ECD0C0500973CE0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C041311ECD0C0500973CE0 /* ViewController.swift */; };
 		80C041351ECD0C0500973CE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80C041331ECD0C0500973CE0 /* Main.storyboard */; };
@@ -41,6 +42,7 @@
 /* Begin PBXFileReference section */
 		80A1CD901ECE787A00502F11 /* SwiftyCam.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyCam.framework; path = Carthage/Build/iOS/SwiftyCam.framework; sourceTree = "<group>"; };
 		80A1CD921ECF82FD00502F11 /* MotionDataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionDataHandler.swift; sourceTree = "<group>"; };
+		80A1CD941ECFA14500502F11 /* PositionCorrector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionCorrector.swift; sourceTree = "<group>"; };
 		80C0412C1ECD0C0500973CE0 /* Selfie Sensei.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Selfie Sensei.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		80C0412F1ECD0C0500973CE0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		80C041311ECD0C0500973CE0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				80C041361ECD0C0500973CE0 /* Selfie_Sensei.xcdatamodeld */,
 				80E9832C1ECD2155002898D8 /* CameraViewController.swift */,
 				80A1CD921ECF82FD00502F11 /* MotionDataHandler.swift */,
+				80A1CD941ECFA14500502F11 /* PositionCorrector.swift */,
 			);
 			path = "Selfie Sensei";
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80A1CD951ECFA14500502F11 /* PositionCorrector.swift in Sources */,
 				80C041381ECD0C0500973CE0 /* Selfie_Sensei.xcdatamodeld in Sources */,
 				80E9832D1ECD2155002898D8 /* CameraViewController.swift in Sources */,
 				80C041321ECD0C0500973CE0 /* ViewController.swift in Sources */,

@@ -10,7 +10,7 @@ import UIKit
 import CoreMotion
 
 class MotionDataHandler: NSObject {
-    // Order : yaw, pitch, roll
+    // Order : yaw: (clockwise < 0), pitch: phone stand up (close to 90), roll: horizontal rotation
     var motionManager : CMMotionManager!
     var yaw : Double!
     var roll : Double!
@@ -19,10 +19,11 @@ class MotionDataHandler: NSObject {
     let alpha = 0.15
     var inputData = Array(repeating: 0.0, count: 3)
     var outputData = Array(repeating: 0.0, count: 3)
-    let testTarget = [0.0, 10.0, -10.0]
+    let testTarget = [0.0, 70.0, 10.0]
     let windowSize = 15
     let range = 2.5
     var windowValues = [[Double]](repeating: [Double] (repeating: 0.0, count: 1), count: 3)
+    var positionCorrector : PositionCorrector!
     
     init(frequency : Double){
         self.motionManager = CMMotionManager()
@@ -32,6 +33,7 @@ class MotionDataHandler: NSObject {
         } else {
             self.queue = nil
         }
+        self.positionCorrector = PositionCorrector(range: range)
     }
     
     func startUpdateMotionData(){
@@ -58,8 +60,12 @@ class MotionDataHandler: NSObject {
         inputData[2] = self.roll
         outputData = self.lowPassFilter(rawData: inputData, output: outputData)
         windowValues = self.updateWindowValues(windowValues: windowValues, with: outputData)
-        print("\(windowValues)")
+        print("\(outputData)")
+//        if self.windowValues[0].count == windowSize {
+//            print("\(self.isPositionHoldCorrect(windowsVals: windowValues, with: testTarget, and: range))")
+//        }
 //        print("\(outputData)")
+        positionCorrector.returnCurrentInstruction(targets: testTarget, currentVals: outputData)
     }
     
     func degrees(radians:Double) -> Double {
@@ -93,7 +99,26 @@ class MotionDataHandler: NSObject {
         return localValues
     }
     
+    func isPositionHoldCorrect(windowsVals : [[Double]], with target : [Double], and range : Double) -> Bool {
+        let l = windowsVals[0].count
+        
+        for i in 0 ..< l {
+            var status = true
+            for j in 0 ..< target.count {
+                status = status && self.isInRange(target: target[j], range: range, val: windowsVals[j][i])
+            }
+            if !status {
+                return false
+            }
+        }
+        return true
+    }
     
-    
+    func isInRange(target : Double, range : Double, val : Double) -> Bool {
+        if val >= target - range && val <= target + range {
+            return true
+        }
+        return false
+    }
     
 }
