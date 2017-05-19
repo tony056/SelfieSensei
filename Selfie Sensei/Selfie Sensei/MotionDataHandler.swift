@@ -10,7 +10,7 @@ import UIKit
 import CoreMotion
 
 class MotionDataHandler: NSObject {
-    
+    // Order : yaw, pitch, roll
     var motionManager : CMMotionManager!
     var yaw : Double!
     var roll : Double!
@@ -19,6 +19,10 @@ class MotionDataHandler: NSObject {
     let alpha = 0.15
     var inputData = Array(repeating: 0.0, count: 3)
     var outputData = Array(repeating: 0.0, count: 3)
+    let testTarget = [0.0, 10.0, -10.0]
+    let windowSize = 15
+    let range = 2.5
+    var windowValues = [[Double]](repeating: [Double] (repeating: 0.0, count: 1), count: 3)
     
     init(frequency : Double){
         self.motionManager = CMMotionManager()
@@ -53,7 +57,8 @@ class MotionDataHandler: NSObject {
         inputData[1] = self.pitch
         inputData[2] = self.roll
         outputData = self.lowPassFilter(rawData: inputData, output: outputData)
-        
+        windowValues = self.updateWindowValues(windowValues: windowValues, with: outputData)
+        print("\(windowValues)")
 //        print("\(outputData)")
     }
     
@@ -73,6 +78,22 @@ class MotionDataHandler: NSObject {
         }
         return localOutput
     }
+    
+    func updateWindowValues(windowValues : [[Double]], with newValues : [Double]) -> [[Double]]{
+        var localValues = windowValues
+        for i in 0 ..< localValues.count {
+            localValues[i].append(newValues[i])
+        }
+        if localValues[0].count > self.windowSize {
+            for i in 0 ..< localValues.count {
+                localValues[i].remove(at: 0)
+            }
+        }
+        
+        return localValues
+    }
+    
+    
     
     
 }
