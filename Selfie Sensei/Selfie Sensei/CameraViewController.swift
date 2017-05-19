@@ -9,21 +9,45 @@ import Material
 import UIKit
 import AVFoundation
 import CoreMotion
+import SwiftyCam
 
-class CameraViewController: UIViewController{
+class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDelegate{
+    var flipCameraButton : UIButton!
+    var flashButton : UIButton!
+    var captureButton : SwiftyCamButton!
     
+    @IBOutlet weak var guideView: UIView!
     let captureSession = AVCaptureSession()
-    var previewLayer : CALayer!
+    var previewLayer : AVCaptureVideoPreviewLayer!
     var captureDevice : AVCaptureDevice!
+    var guideLayer : CALayer!
     
-    let motionManager = CMMotionManager()
+//    let motionManager = CMMotionManager()
+    var motionDataHandler : MotionDataHandler!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        self.previewLayer.frame = self.view.bounds
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareCamera()
+        shouldUseDeviceOrientation = true
+        guideLayer = self.guideView.layer
+        defaultCamera = .front
+        addButtons()
         prepareMotionData()
-        // Do any additional setup after loading the view.
         
+    }
+    
+    func prepareMotionData(){
+        self.motionDataHandler = MotionDataHandler(frequency: 0.05)
+        self.motionDataHandler.startUpdateMotionData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,31 +55,6 @@ class CameraViewController: UIViewController{
         // Dispose of any resources that can be recreated.
     }
     
-    func prepareMotionData(){
-        if motionManager.isDeviceMotionAvailable {
-            motionManager.deviceMotionUpdateInterval = 0.1
-            motionManager.startDeviceMotionUpdates(to: OperationQueue.current!, withHandler: {
-                (deviceMotion, error) -> Void in
-                if(error == nil){
-                    self.handleMotionUpdates(deviceMotion: deviceMotion!)
-                } else {
-                    print("fucking error")
-                }
-            })
-        }
-    }
-    
-    func handleMotionUpdates(deviceMotion : CMDeviceMotion){
-        let attitude = deviceMotion.attitude
-        let roll = degrees(radians: attitude.roll)
-        let pitch = degrees(radians: attitude.pitch)
-        let yaw = degrees(radians: attitude.yaw)
-        print("Roll: \(roll), Pitch: \(pitch), Yaw: \(yaw)")
-    }
-    
-    func degrees(radians:Double) -> Double {
-        return 180 / Double.pi * radians
-    }
     
     func prepareCamera(){
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
@@ -78,8 +77,11 @@ class CameraViewController: UIViewController{
         
         if let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession) {
             self.previewLayer = previewLayer
-            self.view.layer.addSublayer(self.previewLayer)
-            self.previewLayer.frame = self.view.layer.frame
+//            self.view.layer.addSublayer(self.previewLayer)
+            self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspect
+            self.previewLayer.connection.videoOrientation = AVCaptureVideoOrientation.portrait
+//            self.previewUIView.layer.addSublayer(self.previewLayer)
+//            self.previewLayer.frame = self.view.layer.frame
             captureSession.startRunning()
             
             let dataOutput = AVCaptureVideoDataOutput()
@@ -97,7 +99,45 @@ class CameraViewController: UIViewController{
         
     }
     
+    @objc private func cameraSwitchAction(_ sender: Any) {
+        switchCamera()
+    }
     
+    @objc private func toggleFlashAction(_ sender: Any) {
+        flashEnabled = !flashEnabled
+        
+        if flashEnabled == true {
+            flashButton.setImage(#imageLiteral(resourceName: "flash"), for: UIControlState())
+        } else {
+            flashButton.setImage(#imageLiteral(resourceName: "flashOutline"), for: UIControlState())
+        }
+    }
+    
+    private func addButtons() {
+        captureButton = SwiftyCamButton(frame: CGRect(x: view.frame.midX - 30.0, y: view.frame.height - 90.0, width: 60.0, height: 60.0))
+        captureButton.setImage(#imageLiteral(resourceName: "CameraButton"), for: UIControlState())
+        captureButton.delegate = self
+        self.view.addSubview(captureButton)
+        
+        
+        flipCameraButton = UIButton(frame: CGRect(x: (((view.frame.width / 2 - 37.5) / 2) - 15.0), y: view.frame.height - 74.0, width: 30.0, height: 23.0))
+//        flipCameraButton.setImage(, for: UIControlState())
+//        flipCameraButton.setImage(, for: <#T##UIControlState#>)
+        flipCameraButton.addTarget(self, action: #selector(cameraSwitchAction(_:)), for: .touchUpInside)
+        self.view.addSubview(flipCameraButton)
+        
+        let test = CGFloat((view.frame.width - (view.frame.width / 2 + 37.5)) + ((view.frame.width / 2) - 37.5) - 9.0)
+        
+        flashButton = UIButton(frame: CGRect(x: test, y: view.frame.height - 77.5, width: 18.0, height: 30.0))
+//        flashButton.setImage(#imageLiteral(resourceName: "flashOutline"), for: UIControlState())
+        flashButton.addTarget(self, action: #selector(toggleFlashAction(_:)), for: .touchUpInside)
+        self.view.addSubview(flashButton)
+//        guideLayer.borderWidth = 100.0
+//        guideLayer.borderColor = UIColor.purple.cgColor
+//        guideLayer.frame = self.view.bounds
+//        self.view.layer.addSublayer(guideLayer)
+        cameraDelegate = self
+    }
 
     /*
     // MARK: - Navigation
@@ -108,5 +148,12 @@ class CameraViewController: UIViewController{
         // Pass the selected object to the new view controller.
     }
     */
+    func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
+        // Called when takePhoto() is called
+        print("\(photo.width), \(photo.height)")
+    }
     
+    func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
+        print("point: \(point.x), \(point.y)")
+    }
 }

@@ -1,1 +1,2 @@
 github "CosmicMind/Material"
+github "Awalz/SwiftyCam" ~> 2.2.1

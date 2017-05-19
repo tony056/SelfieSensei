@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		80A1CD911ECE787A00502F11 /* SwiftyCam.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80A1CD901ECE787A00502F11 /* SwiftyCam.framework */; };
+		80A1CD931ECF82FD00502F11 /* MotionDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A1CD921ECF82FD00502F11 /* MotionDataHandler.swift */; };
 		80C041301ECD0C0500973CE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C0412F1ECD0C0500973CE0 /* AppDelegate.swift */; };
 		80C041321ECD0C0500973CE0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C041311ECD0C0500973CE0 /* ViewController.swift */; };
 		80C041351ECD0C0500973CE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80C041331ECD0C0500973CE0 /* Main.storyboard */; };
@@ -37,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		80A1CD901ECE787A00502F11 /* SwiftyCam.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyCam.framework; path = Carthage/Build/iOS/SwiftyCam.framework; sourceTree = "<group>"; };
+		80A1CD921ECF82FD00502F11 /* MotionDataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionDataHandler.swift; sourceTree = "<group>"; };
 		80C0412C1ECD0C0500973CE0 /* Selfie Sensei.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Selfie Sensei.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		80C0412F1ECD0C0500973CE0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		80C041311ECD0C0500973CE0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -61,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80A1CD911ECE787A00502F11 /* SwiftyCam.framework in Frameworks */,
 				80C649E01ECD28DC00C4D235 /* Material.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -114,6 +119,7 @@
 				80C0413E1ECD0C0500973CE0 /* Info.plist */,
 				80C041361ECD0C0500973CE0 /* Selfie_Sensei.xcdatamodeld */,
 				80E9832C1ECD2155002898D8 /* CameraViewController.swift */,
+				80A1CD921ECF82FD00502F11 /* MotionDataHandler.swift */,
 			);
 			path = "Selfie Sensei";
 			sourceTree = "<group>";
@@ -139,6 +145,7 @@
 		80E983281ECD15F7002898D8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				80A1CD901ECE787A00502F11 /* SwiftyCam.framework */,
 				80C649DF1ECD28DC00C4D235 /* Material.framework */,
 				80E983291ECD15F7002898D8 /* Material.framework */,
 			);
@@ -284,6 +291,7 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Material.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftyCam.framework",
 			);
 			outputPaths = (
 			);
@@ -302,6 +310,7 @@
 				80E9832D1ECD2155002898D8 /* CameraViewController.swift in Sources */,
 				80C041321ECD0C0500973CE0 /* ViewController.swift in Sources */,
 				80C041301ECD0C0500973CE0 /* AppDelegate.swift in Sources */,
+				80A1CD931ECF82FD00502F11 /* MotionDataHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
