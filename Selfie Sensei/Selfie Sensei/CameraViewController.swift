@@ -118,6 +118,14 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     }
     
     private func addButtons() {
+        let blurEffectView = UIVisualEffectView(effect:UIBlurEffect(style: .light))
+        blurEffectView.frame = self.view.bounds
+        self.view.addSubview(blurEffectView)
+        let guideDisplayView = UIImageView(frame: self.view.bounds)
+        guideDisplayView.image = UIImage(named: "Guide_Display_60_top")
+        self.view.addSubview(guideDisplayView)
+        
+        
         captureButton = SwiftyCamButton(frame: CGRect(x: view.frame.midX - 30.0, y: view.frame.height - 90.0, width: 60.0, height: 60.0))
         captureButton.setImage(#imageLiteral(resourceName: "CameraButton"), for: UIControlState())
         captureButton.delegate = self
