@@ -10,6 +10,8 @@ import UIKit
 import AVFoundation
 import CoreMotion
 import SwiftyCam
+import Firebase
+import FirebaseStorage
 
 class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDelegate{
     var flipCameraButton : UIButton!
@@ -21,6 +23,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     var previewLayer : AVCaptureVideoPreviewLayer!
     var captureDevice : AVCaptureDevice!
     var guideLayer : CALayer!
+    var storageRef : FIRStorageReference!
     
 //    let motionManager = CMMotionManager()
     var motionDataHandler : MotionDataHandler!
@@ -42,6 +45,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         defaultCamera = .front
         addButtons()
         prepareMotionData()
+        self.storageRef = FIRStorage.storage().reference()
         
     }
     
@@ -151,6 +155,19 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
         // Called when takePhoto() is called
         print("\(photo.width), \(photo.height)")
+        // Save the file and push to cloud server
+        
+        let data = UIImagePNGRepresentation(photo)
+        let selfieRef = self.storageRef.child("images/test.png")
+        selfieRef.put(data!, metadata: nil) {
+            (metadata, error) in
+            if let error = error {
+                //error occurred!
+                print("upload error \(error.localizedDescription)")
+            }
+//            let downloadURL = metadata.downloadURL
+            print("uploaded")
+        }
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
