@@ -46,11 +46,12 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         guideLayer = self.guideView.layer
         defaultCamera = .front
 //        self.registerForNotification()
-        addButtons()
+        
 //        addGuideAndEffects()
 //        prepareMotionData()
         self.storageRef = FIRStorage.storage().reference()
         addRecordingArrowView()
+        addButtons()
     }
     
     func prepareMotionData(){
@@ -170,19 +171,21 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
         // Called when takePhoto() is called
         print("\(photo.width), \(photo.height)")
+        toGalleryController()
         // Save the file and push to cloud server
         
-        let data = UIImagePNGRepresentation(photo)
-        let selfieRef = self.storageRef.child("images/test.png")
-        selfieRef.put(data!, metadata: nil) {
-            (metadata, error) in
-            if let error = error {
-                //error occurred!
-                print("upload error \(error.localizedDescription)")
-            }
-//            let downloadURL = metadata.downloadURL
-            print("uploaded")
-        }
+//        let data = UIImagePNGRepresentation(photo)
+//        let selfieRef = self.storageRef.child("images/test.png")
+//        selfieRef.put(data!, metadata: nil) {
+//            (metadata, error) in
+//            if let error = error {
+//                //error occurred!
+//                print("upload error \(error.localizedDescription)")
+//            }
+////            let downloadURL = metadata.downloadURL
+//            print("uploaded")
+//        }
+        
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
@@ -233,5 +236,11 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         self.view.addSubview(self.recordingArrowView)
     }
     
+    func toGalleryController() {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let galleryViewController = storyBoard.instantiateViewController(withIdentifier: "galleryVC") as! GalleryViewController
+        self.present(galleryViewController, animated:true, completion:nil)
+    }
 
 }

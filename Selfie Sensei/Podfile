@@ -8,6 +8,8 @@ target 'Selfie Sensei' do
   # Pods for Selfie Sensei
   pod 'Firebase/Core'
   pod 'Firebase/Storage'
+  # pod 'IDMPhotoBrowser'
+  pod 'INSPhotoGallery'
   target 'Selfie SenseiTests' do
     inherit! :search_paths
     # Pods for testing

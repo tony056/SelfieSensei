@@ -11,6 +11,8 @@
 		493D832E121D5E69EEE4A94E /* Pods_Selfie_SenseiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 829BE130C7F30810DA27B497 /* Pods_Selfie_SenseiUITests.framework */; };
 		8052CB131ED4B74600D9BAA5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8052CB121ED4B74600D9BAA5 /* GoogleService-Info.plist */; };
 		805B21A51EDCCF6100AE2CBF /* RecordingArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805B21A41EDCCF6100AE2CBF /* RecordingArrowView.swift */; };
+		807785091EDE745B004D3AE5 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807785081EDE745A004D3AE5 /* GalleryViewController.swift */; };
+		8077850B1EDE89B0004D3AE5 /* SelfieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8077850A1EDE89B0004D3AE5 /* SelfieCollectionViewCell.swift */; };
 		80A1CD911ECE787A00502F11 /* SwiftyCam.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80A1CD901ECE787A00502F11 /* SwiftyCam.framework */; };
 		80A1CD931ECF82FD00502F11 /* MotionDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A1CD921ECF82FD00502F11 /* MotionDataHandler.swift */; };
 		80A1CD951ECFA14500502F11 /* PositionCorrector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A1CD941ECFA14500502F11 /* PositionCorrector.swift */; };
@@ -54,6 +56,8 @@
 		60F25A2FCC7E7F6E790020A0 /* Pods_Selfie_SenseiTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Selfie_SenseiTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8052CB121ED4B74600D9BAA5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		805B21A41EDCCF6100AE2CBF /* RecordingArrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingArrowView.swift; sourceTree = "<group>"; };
+		807785081EDE745A004D3AE5 /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
+		8077850A1EDE89B0004D3AE5 /* SelfieCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieCollectionViewCell.swift; sourceTree = "<group>"; };
 		80A1CD901ECE787A00502F11 /* SwiftyCam.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyCam.framework; path = Carthage/Build/iOS/SwiftyCam.framework; sourceTree = "<group>"; };
 		80A1CD921ECF82FD00502F11 /* MotionDataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionDataHandler.swift; sourceTree = "<group>"; };
 		80A1CD941ECFA14500502F11 /* PositionCorrector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionCorrector.swift; sourceTree = "<group>"; };
@@ -148,6 +152,8 @@
 				80A1CD941ECFA14500502F11 /* PositionCorrector.swift */,
 				80DBF8551ED510AF0099F2DC /* Utils.swift */,
 				805B21A41EDCCF6100AE2CBF /* RecordingArrowView.swift */,
+				807785081EDE745A004D3AE5 /* GalleryViewController.swift */,
+				8077850A1EDE89B0004D3AE5 /* SelfieCollectionViewCell.swift */,
 			);
 			path = "Selfie Sensei";
 			sourceTree = "<group>";
@@ -501,7 +507,9 @@
 				80DBF8561ED510AF0099F2DC /* Utils.swift in Sources */,
 				80C041321ECD0C0500973CE0 /* ViewController.swift in Sources */,
 				80C041301ECD0C0500973CE0 /* AppDelegate.swift in Sources */,
+				807785091EDE745B004D3AE5 /* GalleryViewController.swift in Sources */,
 				805B21A51EDCCF6100AE2CBF /* RecordingArrowView.swift in Sources */,
+				8077850B1EDE89B0004D3AE5 /* SelfieCollectionViewCell.swift in Sources */,
 				80A1CD931ECF82FD00502F11 /* MotionDataHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -80,6 +80,73 @@
             </objects>
             <point key="canvasLocation" x="870" y="411"/>
         </scene>
+        <!--Gallery View Controller-->
+        <scene sceneID="NCO-SO-gpB">
+            <objects>
+                <viewController storyboardIdentifier="galleryVC" id="zeK-y8-2Zt" customClass="GalleryViewController" customModule="Selfie_Sensei" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YrM-x3-XBB"/>
+                        <viewControllerLayoutGuide type="bottom" id="Z9q-xg-kPU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="oeb-tu-aHc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="sGk-lW-ZFf">
+                                <rect key="frame" x="8" y="18" width="304" height="532"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="304" id="Stl-Wi-AHg"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="OI4-gb-vPX">
+                                    <size key="itemSize" width="93" height="92"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="SelfieCell" reuseIdentifier="SelfieCell" id="A53-4a-o1E" customClass="SelfieCollectionViewCell" customModule="Selfie_Sensei" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="93" height="92"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="93" height="92"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JPa-xD-b8e">
+                                                    <rect key="frame" x="0.0" y="0.0" width="93" height="92"/>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="JPa-xD-b8e" firstAttribute="top" secondItem="A53-4a-o1E" secondAttribute="top" id="3BE-1Q-LIq"/>
+                                            <constraint firstAttribute="trailing" secondItem="JPa-xD-b8e" secondAttribute="trailing" id="LUD-qG-s9L"/>
+                                            <constraint firstItem="JPa-xD-b8e" firstAttribute="leading" secondItem="A53-4a-o1E" secondAttribute="leading" id="bi9-am-f9S"/>
+                                            <constraint firstAttribute="bottom" secondItem="JPa-xD-b8e" secondAttribute="bottom" id="zeE-ii-Xa2"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="thumbnailImageView" destination="JPa-xD-b8e" id="mzI-zE-b49"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="sGk-lW-ZFf" secondAttribute="trailing" constant="-8" id="3R3-Ff-Gge"/>
+                            <constraint firstItem="Z9q-xg-kPU" firstAttribute="top" secondItem="sGk-lW-ZFf" secondAttribute="bottom" constant="18" id="di2-Is-LOY"/>
+                            <constraint firstItem="sGk-lW-ZFf" firstAttribute="centerX" secondItem="oeb-tu-aHc" secondAttribute="centerX" id="fys-ax-7D4"/>
+                            <constraint firstItem="sGk-lW-ZFf" firstAttribute="centerY" secondItem="oeb-tu-aHc" secondAttribute="centerY" id="mMP-Qu-kn5"/>
+                            <constraint firstItem="sGk-lW-ZFf" firstAttribute="leading" secondItem="oeb-tu-aHc" secondAttribute="leadingMargin" constant="-8" id="yPc-tz-nyi"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="selfiesCollectionView" destination="sGk-lW-ZFf" id="tSv-vY-xo8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zRU-IJ-w81" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1700.625" y="872.53521126760563"/>
+        </scene>
         <!--Camera View Controller-->
         <scene sceneID="FAT-SI-xsk">
             <objects>
