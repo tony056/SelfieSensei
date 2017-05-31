@@ -10,7 +10,7 @@ import UIKit
 
 class PositionCorrector: NSObject {
     // order: yaw, pitch, roll
-    let testTarget = [0.0, 70.0, 0.0]
+    let testTarget = [0.0, -30.0, -30.0]
     var range = 2.5
     
     
@@ -73,5 +73,31 @@ class PositionCorrector: NSObject {
     func returnCurrentInstruction(targets : [Double], currentVals : [Double]){
         diffRoll(targetRoll: targets[2], currentRoll: currentVals[2])
     }
+    
+    func isInGuideArea(currentVals : [Double], targetArea : Int) -> Bool {
+        let baseLine = Utils.guideYPRRanges[2 * targetArea]
+        let upperBound = Utils.guideYPRRanges[2 * targetArea + 1]
+        
+        for var i in 0 ..< Utils.axises {
+            if currentVals[i] < baseLine[i] || currentVals[i] > upperBound[i] {
+                return false
+            }
+        }
+        return true
+    }
+    
+    func isAdjusting(currentVals : [Double], targetVals : [Double]) -> Bool {
+        return false
+    }
+    
+    func returnInAreaOrMovingNotification(vals : [Bool]) -> Bool {
+        for val in vals {
+            if !val {
+                return false
+            }
+        }
+        return true
+    }
+    
     
 }

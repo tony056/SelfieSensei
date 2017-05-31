@@ -17,6 +17,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     var flipCameraButton : UIButton!
     var flashButton : UIButton!
     var captureButton : SwiftyCamButton!
+    var notificationLabel : UILabel!
     
     @IBOutlet weak var guideView: UIView!
     let captureSession = AVCaptureSession()
@@ -24,6 +25,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     var captureDevice : AVCaptureDevice!
     var guideLayer : CALayer!
     var storageRef : FIRStorageReference!
+    var recordingArrowView : RecordingArrowView!
     
 //    let motionManager = CMMotionManager()
     var motionDataHandler : MotionDataHandler!
@@ -40,18 +42,29 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        shouldUseDeviceOrientation = true
+        shouldUseDeviceOrientation = false
         guideLayer = self.guideView.layer
         defaultCamera = .front
+//        self.registerForNotification()
         addButtons()
-        prepareMotionData()
+//        addGuideAndEffects()
+//        prepareMotionData()
         self.storageRef = FIRStorage.storage().reference()
-        
+        addRecordingArrowView()
     }
     
     func prepareMotionData(){
         self.motionDataHandler = MotionDataHandler(frequency: 0.05)
         self.motionDataHandler.startUpdateMotionData()
+    }
+    
+    func addGuideAndEffects(){
+        let blurEffectView = UIVisualEffectView(effect:UIBlurEffect(style: .light))
+        blurEffectView.frame = self.view.bounds
+        self.view.addSubview(blurEffectView)
+        let guideDisplayView = UIImageView(frame: self.view.bounds)
+        guideDisplayView.image = UIImage(named: "Guide_Display_60_top")
+        self.view.addSubview(guideDisplayView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -118,12 +131,6 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     }
     
     private func addButtons() {
-        let blurEffectView = UIVisualEffectView(effect:UIBlurEffect(style: .light))
-        blurEffectView.frame = self.view.bounds
-        self.view.addSubview(blurEffectView)
-        let guideDisplayView = UIImageView(frame: self.view.bounds)
-        guideDisplayView.image = UIImage(named: "Guide_Display_60_top")
-        self.view.addSubview(guideDisplayView)
         
         
         captureButton = SwiftyCamButton(frame: CGRect(x: view.frame.midX - 30.0, y: view.frame.height - 90.0, width: 60.0, height: 60.0))
@@ -181,4 +188,50 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
         print("point: \(point.x), \(point.y)")
     }
+    
+    func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
+        // start recording
+        // enable motion track
+        // render covered area
+        // count down init
+    }
+    
+    func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
+        // finish recording
+        // upload to firebase
+        // 
+    }
+    
+    func registerForNotification() {
+        let defaultCenter = NotificationCenter.default
+        defaultCenter.addObserver(self, selector: #selector(CameraViewController.showCaptureButton), name: NSNotification.Name(rawValue: "switchToCaptureButton"), object: nil)
+        defaultCenter.addObserver(self, selector: #selector(CameraViewController.showMovementText), name: NSNotification.Name(rawValue: "showMovingText"), object: nil)
+    }
+    
+    func showMovementText(){
+        if self.captureButton.isHidden == false {
+            self.captureButton.isHidden = true
+        }
+        if self.notificationLabel != nil {
+            // have text
+        } else {
+            self.notificationLabel = UILabel(frame: CGRect(x: view.frame.midX - 100.0, y: view.frame.height - 90.0, width: 200.0, height: 60.0))
+            self.notificationLabel.textColor = UIColor.white
+            self.notificationLabel.text = "Please move to the targeted area in 3 seconds"
+            self.notificationLabel.adjustsFontSizeToFitWidth = true
+            self.view.addSubview(notificationLabel)
+        }
+        
+    }
+    
+    func showCaptureButton(){
+        print("moved to the position we want")
+    }
+    
+    func addRecordingArrowView(){
+        self.recordingArrowView = RecordingArrowView(frame: self.view.frame)
+        self.view.addSubview(self.recordingArrowView)
+    }
+    
+
 }

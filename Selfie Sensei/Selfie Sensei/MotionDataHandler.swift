@@ -20,10 +20,11 @@ class MotionDataHandler: NSObject {
     var inputData = Array(repeating: 0.0, count: 3)
     var outputData = Array(repeating: 0.0, count: 3)
     let testTarget = [0.0, 70.0, 10.0]
-    let windowSize = 15
     let range = 2.5
     var windowValues = [[Double]](repeating: [Double] (repeating: 0.0, count: 1), count: 3)
+    var windowStates = [Bool] (repeating: false, count: Utils.windowSize)
     var positionCorrector : PositionCorrector!
+    var guideOrAdjustMode = false //false is guide mode, true is adjust mode
     
     init(frequency : Double){
         self.motionManager = CMMotionManager()
@@ -60,12 +61,16 @@ class MotionDataHandler: NSObject {
         inputData[2] = self.roll
         outputData = self.lowPassFilter(rawData: inputData, output: outputData)
         windowValues = self.updateWindowValues(windowValues: windowValues, with: outputData)
+        var state = self.positionCorrector.isInGuideArea(currentVals: outputData, targetArea: 0)
+        if guideOrAdjustMode {
+            // get state from another function
+            state = self.positionCorrector.isAdjusting(currentVals: outputData, targetVals: [0, 0, 0])
+        }
+        windowStates = self.updateWindowStates(windows: windowStates, with: state)
         print("\(outputData)")
-//        if self.windowValues[0].count == windowSize {
-//            print("\(self.isPositionHoldCorrect(windowsVals: windowValues, with: testTarget, and: range))")
-//        }
-//        print("\(outputData)")
-        positionCorrector.returnCurrentInstruction(targets: testTarget, currentVals: outputData)
+//        positionCorrector.returnCurrentInstruction(targets: testTarget, currentVals: outputData)
+        let status = self.positionCorrector.returnInAreaOrMovingNotification(vals: self.windowStates)
+        notifyUIUpdate(status: status)
     }
     
     func degrees(radians:Double) -> Double {
@@ -90,13 +95,24 @@ class MotionDataHandler: NSObject {
         for i in 0 ..< localValues.count {
             localValues[i].append(newValues[i])
         }
-        if localValues[0].count > self.windowSize {
+        if localValues[0].count > Utils.windowSize {
             for i in 0 ..< localValues.count {
                 localValues[i].remove(at: 0)
             }
         }
         
         return localValues
+    }
+    
+    func updateWindowStates(windows : [Bool], with newState : Bool) -> [Bool] {
+        var localStates = windows
+        localStates.append(newState)
+        
+        if localStates.count > Utils.windowSize {
+            localStates.remove(at: 0)
+        }
+        
+        return localStates
     }
     
     func isPositionHoldCorrect(windowsVals : [[Double]], with target : [Double], and range : Double) -> Bool {
@@ -119,6 +135,17 @@ class MotionDataHandler: NSObject {
             return true
         }
         return false
+    }
+    
+    func notifyUIUpdate(status : Bool){
+        let defaultCenter = NotificationCenter.default
+        if status {
+            // change the text view to capture button
+            defaultCenter.post(name: NSNotification.Name(rawValue: "switchToCaptureButton"), object: nil)
+        } else {
+            // keep showing the text view
+            defaultCenter.post(name: NSNotification.Name(rawValue: "showMovingText"), object: nil)
+        }
     }
     
 }
