@@ -9,10 +9,23 @@
 import UIKit
 import INSPhotoGallery
 
-class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SelfieSenseiAnalyzerDelegate {
+    func showWaitingView(show: Bool) {
+        if show {
+            self.waitingView.isHidden = false
+            self.waitingView.startAnimating()
+        } else {
+            self.waitingView.isHidden = true
+            self.waitingView.stopAnimating()
+        }
+    }
+
     
     @IBOutlet weak var selfiesCollectionView: UICollectionView!
     private var waitingView : WaitingView!
+    private var imageExtractor : ImageExtractor!
+    private var selfieSenseiAnalyzor : SelfieSenseiAnalyzer!
+    var videoURL : URL!
     lazy var photos: [INSPhotoViewable] = { return
     
     [
@@ -34,10 +47,8 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         self.selfiesCollectionView.dataSource = self
         self.waitingView = WaitingView(frame: self.view.frame)
         self.view.addSubview(self.waitingView)
-        self.waitingView.startAnimating()
-//        self.selfiesCollectionView.register( SelfieCollectionViewCell.self, forCellWithReuseIdentifier: "selfieCell")
-        // Do any additional setup after loading the view.
-//        self.selfiesCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "SelfieCell")
+        self.waitingView.isHidden = true
+        self.startImageExtraction()
         print("load attribute")
         for photo in photos {
             if let photo = photo as? INSPhoto {
@@ -78,6 +89,12 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         return photos.count
     }
     
-    
+    func startImageExtraction() {
+        self.imageExtractor = ImageExtractor(sourceURL: self.videoURL)
+        let photos = self.imageExtractor.extractFramesFromVideo()
+        self.selfieSenseiAnalyzor = SelfieSenseiAnalyzer(delegate: self, with: photos)
+        self.selfieSenseiAnalyzor.uploadImagesToServer()
+        
+    }
 
 }

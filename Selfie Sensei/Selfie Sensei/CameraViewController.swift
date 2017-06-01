@@ -49,7 +49,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         shouldUseDeviceOrientation = false
         guideLayer = self.guideView.layer
         defaultCamera = .front
-        maximumVideoDuration = 3.0
+        maximumVideoDuration = 5.0
 //        self.registerForNotification()
         
 //        addGuideAndEffects()
@@ -137,30 +137,10 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     }
     
     private func addButtons() {
-        
-        
         captureButton = SwiftyCamButton(frame: CGRect(x: view.frame.midX - 30.0, y: view.frame.height - 90.0, width: 60.0, height: 60.0))
         captureButton.setImage(#imageLiteral(resourceName: "CameraButton"), for: UIControlState())
         captureButton.delegate = self
         self.view.addSubview(captureButton)
-        
-        
-        flipCameraButton = UIButton(frame: CGRect(x: (((view.frame.width / 2 - 37.5) / 2) - 15.0), y: view.frame.height - 74.0, width: 30.0, height: 23.0))
-//        flipCameraButton.setImage(, for: UIControlState())
-//        flipCameraButton.setImage(, for: <#T##UIControlState#>)
-        flipCameraButton.addTarget(self, action: #selector(cameraSwitchAction(_:)), for: .touchUpInside)
-        self.view.addSubview(flipCameraButton)
-        
-        let test = CGFloat((view.frame.width - (view.frame.width / 2 + 37.5)) + ((view.frame.width / 2) - 37.5) - 9.0)
-        
-        flashButton = UIButton(frame: CGRect(x: test, y: view.frame.height - 77.5, width: 18.0, height: 30.0))
-//        flashButton.setImage(#imageLiteral(resourceName: "flashOutline"), for: UIControlState())
-        flashButton.addTarget(self, action: #selector(toggleFlashAction(_:)), for: .touchUpInside)
-        self.view.addSubview(flashButton)
-//        guideLayer.borderWidth = 100.0
-//        guideLayer.borderColor = UIColor.purple.cgColor
-//        guideLayer.frame = self.view.bounds
-//        self.view.layer.addSublayer(guideLayer)
         cameraDelegate = self
     }
 
@@ -219,7 +199,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         print("start extracting")
 //        let frames = self.extractFramesFromVideo(videoURL: url)
         // go to next view controller
-        toGalleryController()
+        toGalleryController(url: url)
     }
     
     func registerForNotification() {
@@ -254,10 +234,11 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         self.view.addSubview(self.recordingArrowView)
     }
     
-    func toGalleryController() {
+    func toGalleryController(url : URL) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
         let galleryViewController = storyBoard.instantiateViewController(withIdentifier: "galleryVC") as! GalleryViewController
+        galleryViewController.videoURL = url
         self.present(galleryViewController, animated:true, completion:nil)
     }
 
