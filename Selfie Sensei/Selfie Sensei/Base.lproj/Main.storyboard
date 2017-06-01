@@ -70,6 +70,7 @@
                             <constraint firstItem="ZRs-ga-Gre" firstAttribute="leading" secondItem="MQK-VV-pdC" secondAttribute="leadingMargin" id="BdQ-1n-FoQ"/>
                             <constraint firstAttribute="bottomMargin" secondItem="ZRs-ga-Gre" secondAttribute="bottom" id="aXw-4S-wSO"/>
                             <constraint firstItem="ZRs-ga-Gre" firstAttribute="top" secondItem="MQK-VV-pdC" secondAttribute="topMargin" id="uDT-RV-lz0"/>
+                            <constraint firstItem="ZRs-ga-Gre" firstAttribute="centerX" secondItem="MQK-VV-pdC" secondAttribute="centerX" id="y7d-fb-wW1"/>
                         </constraints>
                     </view>
                     <connections>

@@ -12,14 +12,18 @@ import CoreMotion
 import SwiftyCam
 import Firebase
 import FirebaseStorage
+import NVActivityIndicatorView
+
 
 class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDelegate{
     var flipCameraButton : UIButton!
     var flashButton : UIButton!
     var captureButton : SwiftyCamButton!
     var notificationLabel : UILabel!
-    
+    var progressView : NVActivityIndicatorView!
     @IBOutlet weak var guideView: UIView!
+    
+    
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer!
     var captureDevice : AVCaptureDevice!
@@ -45,6 +49,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         shouldUseDeviceOrientation = false
         guideLayer = self.guideView.layer
         defaultCamera = .front
+        maximumVideoDuration = 3.0
 //        self.registerForNotification()
         
 //        addGuideAndEffects()
@@ -171,7 +176,8 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
         // Called when takePhoto() is called
         print("\(photo.width), \(photo.height)")
-        toGalleryController()
+//        toGalleryController()
+//        self.waitingViewInit()
         // Save the file and push to cloud server
         
 //        let data = UIImagePNGRepresentation(photo)
@@ -194,6 +200,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
         // start recording
+        print("start recording")
         // enable motion track
         // render covered area
         // count down init
@@ -201,8 +208,18 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
         // finish recording
+        print("finish recording")
         // upload to firebase
         // 
+    }
+    
+    func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishProcessVideoAt url: URL) {
+        // video url
+        // extract frames out
+        print("start extracting")
+//        let frames = self.extractFramesFromVideo(videoURL: url)
+        // go to next view controller
+        toGalleryController()
     }
     
     func registerForNotification() {
@@ -210,6 +227,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         defaultCenter.addObserver(self, selector: #selector(CameraViewController.showCaptureButton), name: NSNotification.Name(rawValue: "switchToCaptureButton"), object: nil)
         defaultCenter.addObserver(self, selector: #selector(CameraViewController.showMovementText), name: NSNotification.Name(rawValue: "showMovingText"), object: nil)
     }
+    
     
     func showMovementText(){
         if self.captureButton.isHidden == false {
@@ -241,6 +259,58 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         
         let galleryViewController = storyBoard.instantiateViewController(withIdentifier: "galleryVC") as! GalleryViewController
         self.present(galleryViewController, animated:true, completion:nil)
+    }
+
+    
+    func extractFramesFromVideo(videoURL : URL) -> [UIImage]{
+        let asset = AVAsset(url: videoURL)
+        let assetImgGenerator = AVAssetImageGenerator(asset: asset)
+        assetImgGenerator.appliesPreferredTrackTransform = true
+        assetImgGenerator.requestedTimeToleranceAfter = kCMTimeZero
+        assetImgGenerator.requestedTimeToleranceBefore = kCMTimeZero
+        var frames : [UIImage] = []
+        
+        var value : Int64 = 0
+        let requiredFramesCount = Int(CMTimeGetSeconds(asset.duration) * 10)
+        let step : Int64 = asset.duration.value / Int64(requiredFramesCount)
+        
+        for _ in 0 ..< requiredFramesCount {
+            let time = CMTime(value: CMTimeValue(value), timescale: asset.duration.timescale)
+            do {
+                let imageRef = try assetImgGenerator.copyCGImage(at: time, actualTime: nil)
+                let image = UIImage(cgImage: imageRef)
+//                frames.append(image)
+                let name = String(value)
+                let selfieRef = self.storageRef.child("images/\(name).png")
+                selfieRef.put(UIImagePNGRepresentation(image)!, metadata: nil) {
+                    (metadata, error) in
+                    if let error = error {
+                        //error occurred!
+                        print("upload error \(error.localizedDescription)")
+                    }
+                    let downloadURL = metadata?.downloadURL
+                    print("uploaded: \(String(describing: downloadURL))")
+                }
+                value += step
+            } catch {
+                print(error.localizedDescription)
+            }
+            
+            
+        }
+        return frames
+    }
+    
+    
+    func waitingViewInit(){
+        let rect = CGRect(x: self.view.frame.width * (0.5 - 0.4) , y: self.view.frame.height * (0.5 - 0.15), width: self.view.frame.width * 0.8, height: self.view.frame.height * 0.3)
+        self.progressView = NVActivityIndicatorView(frame: rect, type: NVActivityIndicatorType.ballClipRotatePulse, color: UIColor.purple, padding: 0)
+        self.view.addSubview(self.progressView)
+        self.progressView.startAnimating()
+    }
+    
+    func stopWaitingView(){
+        self.progressView.stopAnimating()
     }
 
 }

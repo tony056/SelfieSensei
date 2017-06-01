@@ -8,6 +8,7 @@ target 'Selfie Sensei' do
   # Pods for Selfie Sensei
   pod 'Firebase/Core'
   pod 'Firebase/Storage'
+  pod 'NVActivityIndicatorView'
   # pod 'IDMPhotoBrowser'
   pod 'INSPhotoGallery'
   target 'Selfie SenseiTests' do

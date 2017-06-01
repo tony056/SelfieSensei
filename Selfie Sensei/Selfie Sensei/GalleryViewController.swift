@@ -12,6 +12,7 @@ import INSPhotoGallery
 class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var selfiesCollectionView: UICollectionView!
+    private var waitingView : WaitingView!
     lazy var photos: [INSPhotoViewable] = { return
     
     [
@@ -24,11 +25,16 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         
     ]}()
     
+    var preprocessingPhotos : [INSPhotoViewable] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("start VC")
         self.selfiesCollectionView.delegate = self
         self.selfiesCollectionView.dataSource = self
+        self.waitingView = WaitingView(frame: self.view.frame)
+        self.view.addSubview(self.waitingView)
+        self.waitingView.startAnimating()
 //        self.selfiesCollectionView.register( SelfieCollectionViewCell.self, forCellWithReuseIdentifier: "selfieCell")
         // Do any additional setup after loading the view.
 //        self.selfiesCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "SelfieCell")
@@ -71,14 +77,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photos.count
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
+    
 
 }

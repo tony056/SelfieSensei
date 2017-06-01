@@ -20,11 +20,13 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - GTMSessionFetcher/Core (1.1.8)
   - INSPhotoGallery (1.1.0)
+  - NVActivityIndicatorView (3.4)
 
 DEPENDENCIES:
   - Firebase/Core
   - Firebase/Storage
   - INSPhotoGallery
+  - NVActivityIndicatorView
 
 SPEC CHECKSUMS:
   Firebase: 5bc34d7b5ff5792e3386c8b28dc6265deeab0da4
@@ -35,7 +37,8 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 6f8d8b28b7e345549ac471071608170b31cb4977
   INSPhotoGallery: 81056815e82fb7ee6f271ca017db5985b4f96d0a
+  NVActivityIndicatorView: 5754be63ceecd1df8af37d3c088d81872feeb8b8
 
-PODFILE CHECKSUM: ec95b922a6f2d06324cc78328c55f6e7ce379b6a
+PODFILE CHECKSUM: 22a024a63c4d357abd60a983cde3b8b5ad09b8be
 
 COCOAPODS: 1.2.0

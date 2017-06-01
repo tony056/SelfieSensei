@@ -91,7 +91,7 @@ open class SwiftyCamViewController: UIViewController {
 
 	/// Public Camera Delegate for the Custom View Controller Subclass
 
-	public var cameraDelegate: SwiftyCamViewControllerDelegate?
+	public weak var cameraDelegate: SwiftyCamViewControllerDelegate?
 
 	/// Maxiumum video duration if SwiftyCamButton is used
 
@@ -146,6 +146,23 @@ open class SwiftyCamViewController: UIViewController {
 	/// Sets wether the taken photo or video should be oriented according to the device orientation
 
 	public var shouldUseDeviceOrientation      = false
+    
+    /// Sets whether or not View Controller supports auto rotation
+    
+    public var allowAutoRotate                = false
+    
+    /// Specifies the [videoGravity](https://developer.apple.com/reference/avfoundation/avcapturevideopreviewlayer/1386708-videogravity) for the preview layer.
+    public var videoGravity                   : SwiftyCamVideoGravity = .resizeAspect
+    
+    /// Sets whether or not video recordings will record audio
+    /// Setting to true will prompt user for access to microphone on View Controller launch.
+    public var audioEnabled                   = true
+    
+    /// Public access to Pinch Gesture
+    fileprivate(set) public var pinchGesture  : UIPinchGestureRecognizer!
+    
+    /// Public access to Pan Gesture
+    fileprivate(set) public var panGesture    : UIPanGestureRecognizer!
 
 
 	// MARK: Public Get-only Variable Declarations
@@ -166,7 +183,7 @@ open class SwiftyCamViewController: UIViewController {
 
 	/// Current Capture Session
 
-	fileprivate let session                      = AVCaptureSession()
+	public let session                           = AVCaptureSession()
 
 	/// Serial queue used for setting up session
 
@@ -229,7 +246,7 @@ open class SwiftyCamViewController: UIViewController {
 	/// Disable view autorotation for forced portrait recorindg
 
 	override open var shouldAutorotate: Bool {
-		return false
+		return allowAutoRotate
 	}
 
 	// MARK: ViewDidLoad
@@ -238,13 +255,13 @@ open class SwiftyCamViewController: UIViewController {
 
 	override open func viewDidLoad() {
 		super.viewDidLoad()
-		previewLayer = PreviewView(frame: view.bounds)
+        view = PreviewView(frame: view.frame, videoGravity: videoGravity)
+		previewLayer = view as! PreviewView!
 
 		// Add Gesture Recognizers
+        
+        addGestureRecognizers()
 
-		addGestureRecognizersTo(view: previewLayer)
-
-		self.view.addSubview(previewLayer)
 		previewLayer.session = session
 
 		// Test authorization status for Camera and Micophone
@@ -277,14 +294,53 @@ open class SwiftyCamViewController: UIViewController {
     // MARK: ViewDidLayoutSubviews
     
     /// ViewDidLayoutSubviews() Implementation
+    /// ViewDidLayoutSubviews() Implementation
     
-    
-    override open func viewDidLayoutSubviews() {
-        previewLayer.frame = view.bounds
+    private func updatePreviewLayer(layer: AVCaptureConnection, orientation: AVCaptureVideoOrientation) {
         
-        super.viewDidLayoutSubviews()
+        layer.videoOrientation = orientation
+        
+        previewLayer.frame = self.view.bounds
+        
     }
     
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if let connection =  self.previewLayer?.videoPreviewLayer.connection  {
+            
+            let currentDevice: UIDevice = UIDevice.current
+            
+            let orientation: UIDeviceOrientation = currentDevice.orientation
+            
+            let previewLayerConnection : AVCaptureConnection = connection
+            
+            if previewLayerConnection.isVideoOrientationSupported {
+                
+                switch (orientation) {
+                case .portrait: updatePreviewLayer(layer: previewLayerConnection, orientation: .portrait)
+                
+                    break
+                    
+                case .landscapeRight: updatePreviewLayer(layer: previewLayerConnection, orientation: .landscapeLeft)
+                
+                    break
+                    
+                case .landscapeLeft: updatePreviewLayer(layer: previewLayerConnection, orientation: .landscapeRight)
+                
+                    break
+                    
+                case .portraitUpsideDown: updatePreviewLayer(layer: previewLayerConnection, orientation: .portraitUpsideDown)
+                
+                    break
+                    
+                default: updatePreviewLayer(layer: previewLayerConnection, orientation: .portrait)
+                
+                    break
+                }
+            }
+        }
+    }
 	// MARK: ViewDidAppear
 
 	/// ViewDidAppear(_ animated:) Implementation
@@ -647,6 +703,9 @@ open class SwiftyCamViewController: UIViewController {
 	/// Add Audio Inputs
 
 	fileprivate func addAudioInput() {
+        guard audioEnabled == true else {
+            return
+        }
 		do {
 			let audioDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeAudio)
 			let audioDeviceInput = try AVCaptureDeviceInput(device: audioDevice)
@@ -921,6 +980,10 @@ open class SwiftyCamViewController: UIViewController {
 		guard allowBackgroundAudio == true else {
 			return
 		}
+        
+        guard audioEnabled == true else {
+            return
+        }
 
 		do{
 			try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
@@ -1120,24 +1183,24 @@ extension SwiftyCamViewController {
 
 	*/
 
-	fileprivate func addGestureRecognizersTo(view: UIView) {
-		let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(zoomGesture(pinch:)))
+	fileprivate func addGestureRecognizers() {
+		pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(zoomGesture(pinch:)))
 		pinchGesture.delegate = self
-		view.addGestureRecognizer(pinchGesture)
+		previewLayer.addGestureRecognizer(pinchGesture)
 
 		let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(singleTapGesture(tap:)))
 		singleTapGesture.numberOfTapsRequired = 1
 		singleTapGesture.delegate = self
-		view.addGestureRecognizer(singleTapGesture)
+		previewLayer.addGestureRecognizer(singleTapGesture)
 
 		let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(doubleTapGesture(tap:)))
 		doubleTapGesture.numberOfTapsRequired = 2
 		doubleTapGesture.delegate = self
-		view.addGestureRecognizer(doubleTapGesture)
+		previewLayer.addGestureRecognizer(doubleTapGesture)
         
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGesture(pan:)))
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGesture(pan:)))
         panGesture.delegate = self
-        view.addGestureRecognizer(panGesture)
+        previewLayer.addGestureRecognizer(panGesture)
 	}
 }
 
