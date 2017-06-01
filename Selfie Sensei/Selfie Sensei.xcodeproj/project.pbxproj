@@ -17,6 +17,7 @@
 		8077850F1EDF85A2004D3AE5 /* ImageExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8077850E1EDF85A2004D3AE5 /* ImageExtractor.swift */; };
 		807785111EDF8DAA004D3AE5 /* WaitingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807785101EDF8DAA004D3AE5 /* WaitingView.swift */; };
 		807785131EDF971C004D3AE5 /* SelfieSenseiAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807785121EDF971C004D3AE5 /* SelfieSenseiAnalyzer.swift */; };
+		807785151EDFC32B004D3AE5 /* SelfieSenseiRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807785141EDFC32B004D3AE5 /* SelfieSenseiRecordButton.swift */; };
 		80A1CD911ECE787A00502F11 /* SwiftyCam.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80A1CD901ECE787A00502F11 /* SwiftyCam.framework */; };
 		80A1CD931ECF82FD00502F11 /* MotionDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A1CD921ECF82FD00502F11 /* MotionDataHandler.swift */; };
 		80A1CD951ECFA14500502F11 /* PositionCorrector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A1CD941ECFA14500502F11 /* PositionCorrector.swift */; };
@@ -66,6 +67,7 @@
 		8077850E1EDF85A2004D3AE5 /* ImageExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageExtractor.swift; sourceTree = "<group>"; };
 		807785101EDF8DAA004D3AE5 /* WaitingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitingView.swift; sourceTree = "<group>"; };
 		807785121EDF971C004D3AE5 /* SelfieSenseiAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieSenseiAnalyzer.swift; sourceTree = "<group>"; };
+		807785141EDFC32B004D3AE5 /* SelfieSenseiRecordButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieSenseiRecordButton.swift; sourceTree = "<group>"; };
 		80A1CD901ECE787A00502F11 /* SwiftyCam.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyCam.framework; path = Carthage/Build/iOS/SwiftyCam.framework; sourceTree = "<group>"; };
 		80A1CD921ECF82FD00502F11 /* MotionDataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionDataHandler.swift; sourceTree = "<group>"; };
 		80A1CD941ECFA14500502F11 /* PositionCorrector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionCorrector.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				8077850E1EDF85A2004D3AE5 /* ImageExtractor.swift */,
 				807785101EDF8DAA004D3AE5 /* WaitingView.swift */,
 				807785121EDF971C004D3AE5 /* SelfieSenseiAnalyzer.swift */,
+				807785141EDFC32B004D3AE5 /* SelfieSenseiRecordButton.swift */,
 			);
 			path = "Selfie Sensei";
 			sourceTree = "<group>";
@@ -527,6 +530,7 @@
 				805B21A51EDCCF6100AE2CBF /* RecordingArrowView.swift in Sources */,
 				8077850B1EDE89B0004D3AE5 /* SelfieCollectionViewCell.swift in Sources */,
 				80A1CD931ECF82FD00502F11 /* MotionDataHandler.swift in Sources */,
+				807785151EDFC32B004D3AE5 /* SelfieSenseiRecordButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

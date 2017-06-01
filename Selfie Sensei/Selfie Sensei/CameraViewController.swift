@@ -18,7 +18,7 @@ import NVActivityIndicatorView
 class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDelegate{
     var flipCameraButton : UIButton!
     var flashButton : UIButton!
-    var captureButton : SwiftyCamButton!
+    var captureButton : SelfieSenseiRecordButton!
     var notificationLabel : UILabel!
     var progressView : NVActivityIndicatorView!
     @IBOutlet weak var guideView: UIView!
@@ -33,6 +33,8 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     
 //    let motionManager = CMMotionManager()
     var motionDataHandler : MotionDataHandler!
+    
+    var timer = Timer()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -49,7 +51,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         shouldUseDeviceOrientation = false
         guideLayer = self.guideView.layer
         defaultCamera = .front
-        maximumVideoDuration = 5.0
+        maximumVideoDuration = 3.0
 //        self.registerForNotification()
         
 //        addGuideAndEffects()
@@ -137,9 +139,9 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     }
     
     private func addButtons() {
-        captureButton = SwiftyCamButton(frame: CGRect(x: view.frame.midX - 30.0, y: view.frame.height - 90.0, width: 60.0, height: 60.0))
-        captureButton.setImage(#imageLiteral(resourceName: "CameraButton"), for: UIControlState())
-        captureButton.delegate = self
+        captureButton = SelfieSenseiRecordButton(frame: CGRect(x: view.frame.midX - 40.0, y: view.frame.height - 90.0, width: 80.0, height: 80.0))
+//        captureButton.setImage(#imageLiteral(resourceName: "CameraButton"), for: UIControlState())
+        self.captureButton.addTarget(self, action: #selector(CameraViewController.btnPressed), for: .touchUpInside)
         self.view.addSubview(captureButton)
         cameraDelegate = self
     }
@@ -153,34 +155,32 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func btnPressed() {
+//        print("hi")
+        if !isVideoRecording {
+            startVideoRecording()
+        } else {
+            stopVideoRecording()
+        }
+    }
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
         // Called when takePhoto() is called
         print("\(photo.width), \(photo.height)")
-//        toGalleryController()
-//        self.waitingViewInit()
-        // Save the file and push to cloud server
-        
-//        let data = UIImagePNGRepresentation(photo)
-//        let selfieRef = self.storageRef.child("images/test.png")
-//        selfieRef.put(data!, metadata: nil) {
-//            (metadata, error) in
-//            if let error = error {
-//                //error occurred!
-//                print("upload error \(error.localizedDescription)")
-//            }
-////            let downloadURL = metadata.downloadURL
-//            print("uploaded")
-//        }
-        
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
-        print("point: \(point.x), \(point.y)")
+//        print("point: \(point.x), \(point.y)")
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
         // start recording
         print("start recording")
+        self.captureButton.growButton()
+        self.timer.invalidate()
+        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
+        self.recordingArrowView.startMonitoring()
+        self.recordingArrowView.initCountDown(from: Int(maximumVideoDuration))
         // enable motion track
         // render covered area
         // count down init
@@ -189,14 +189,19 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
         // finish recording
         print("finish recording")
+        self.captureButton.shrinkButton()
+        self.recordingArrowView.stopMonitoring()
+        self.timer.invalidate()
         // upload to firebase
-        // 
+        
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishProcessVideoAt url: URL) {
         // video url
         // extract frames out
         print("start extracting")
+        self.recordingArrowView.updateTextInCountDown()
+        self.recordingArrowView.hideCountDownLabel()
 //        let frames = self.extractFramesFromVideo(videoURL: url)
         // go to next view controller
         toGalleryController(url: url)
@@ -216,7 +221,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         if self.notificationLabel != nil {
             // have text
         } else {
-            self.notificationLabel = UILabel(frame: CGRect(x: view.frame.midX - 100.0, y: view.frame.height - 90.0, width: 200.0, height: 60.0))
+            self.notificationLabel = UILabel(frame: CGRect(x: view.frame.midX - 100.0, y: view.frame.height - 110.0, width: 200.0, height: 60.0))
             self.notificationLabel.textColor = UIColor.white
             self.notificationLabel.text = "Please move to the targeted area in 3 seconds"
             self.notificationLabel.adjustsFontSizeToFitWidth = true
@@ -292,6 +297,14 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     
     func stopWaitingView(){
         self.progressView.stopAnimating()
+    }
+    
+    func updateTime() {
+//        print("hi")
+        let status = self.recordingArrowView.updateTextInCountDown()
+        if !status {
+            stopVideoRecording()
+        }
     }
 
 }

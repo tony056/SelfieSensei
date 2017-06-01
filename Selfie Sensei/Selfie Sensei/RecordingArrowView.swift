@@ -30,6 +30,7 @@ class RecordingArrowView: UIView {
     private var viewFrame : CGRect!
     private var arrowImageView : UIImageView!
     private var trackImageView : UIImageView!
+    private var countDownLabel : UILabel!
     
     private var context : CGContext!
     
@@ -68,11 +69,48 @@ class RecordingArrowView: UIView {
         
         
         self.setUpContext()
-        self.startMonitoring()
+//        self.startMonitoring()
         
     }
     
-    func startMonitoring() {
+    func initCountDown(from sec : Int) {
+        if let label = self.countDownLabel {
+            print("already have label")
+            self.countDownLabel.text = String(sec)
+        } else {
+            let rect = CGRect(x: 0.0, y: self.viewFrame.height / 2 - self.arrowImageView.height * 2, width: self.viewFrame.width, height: self.arrowImageView.height)
+            self.countDownLabel = UILabel(frame: rect)
+            self.countDownLabel.backgroundColor = UIColor.clear
+            self.countDownLabel.textColor = UIColor(red: 50, green: 0, blue: 111, alpha: 1)
+//            self.countDownLabel.adjustsFontSizeToFitWidth = true
+            self.countDownLabel.font = UIFont(name: "Helvetica Neue", size: 100)
+            self.countDownLabel.textAlignment = .center
+            self.countDownLabel.text = String(sec)
+            self.addSubview(self.countDownLabel)
+        }
+    }
+    
+    public func updateTextInCountDown() -> Bool {
+        let currentText = self.countDownLabel.text
+        var sec = Int(currentText!)!
+        if sec - 1 >= 0 {
+            sec -= 1
+        }
+        self.countDownLabel.text = String(sec)
+        if sec != 0 {
+            return true
+        }
+        return false
+    }
+    
+    public func hideCountDownLabel() {
+        let currentText = self.countDownLabel.text
+        if currentText == "0" {
+            self.countDownLabel.isHidden = true
+        }
+    }
+    
+    public func startMonitoring() {
         self.motionManager.gyroUpdateInterval = motionGyroUpdateInterval
         if !self.motionManager.isGyroActive && self.motionManager.isGyroAvailable {
             self.motionManager.startGyroUpdates(to: OperationQueue.current!, withHandler:{
@@ -80,12 +118,13 @@ class RecordingArrowView: UIView {
                 // rotate the arrow according to the device motion rotation rate
                 self.rotateByRotationRate(gyroData: gyroData!)
             })
+            self.motionEnabled = true
         } else {
             print("No Gyro Available")
         }
     }
     
-    func stopMonitoring() {
+    public func stopMonitoring() {
         if self.motionEnabled == true {
             self.motionEnabled = false
             self.motionManager.stopGyroUpdates()
@@ -155,4 +194,5 @@ class RecordingArrowView: UIView {
 //        self.context = UIGraphicsGetCurrentContext()
         
     }
+
 }

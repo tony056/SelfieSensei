@@ -23,14 +23,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZCu-sS-jpb" customClass="RaisedButton">
-                                <rect key="frame" x="140.5" y="269" width="39" height="30"/>
+                                <rect key="frame" x="139" y="268" width="42" height="32"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <state key="normal" title="Selfie"/>
                                 <connections>
                                     <segue destination="gzt-Qd-jAp" kind="show" id="j7O-lg-e6k"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P4l-Sm-9kY" customClass="RaisedButton">
-                                <rect key="frame" x="138" y="354" width="44" height="30"/>
+                                <rect key="frame" x="138" y="355" width="44" height="30"/>
                                 <state key="normal" title="Profile"/>
                             </button>
                         </subviews>

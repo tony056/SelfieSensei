@@ -48,7 +48,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         self.waitingView = WaitingView(frame: self.view.frame)
         self.view.addSubview(self.waitingView)
         self.waitingView.isHidden = true
-        self.startImageExtraction()
+//        self.startImageExtraction()
         print("load attribute")
         for photo in photos {
             if let photo = photo as? INSPhoto {
@@ -56,6 +56,11 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
         }
         print("done")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.startImageExtraction()
     }
 
     override func didReceiveMemoryWarning() {
@@ -90,10 +95,11 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func startImageExtraction() {
-        self.imageExtractor = ImageExtractor(sourceURL: self.videoURL)
-        let photos = self.imageExtractor.extractFramesFromVideo()
-        self.selfieSenseiAnalyzor = SelfieSenseiAnalyzer(delegate: self, with: photos)
-        self.selfieSenseiAnalyzor.uploadImagesToServer()
+//        self.imageExtractor = ImageExtractor(sourceURL: self.videoURL)
+//        let photos = self.imageExtractor.extractFramesFromVideo()
+//        self.selfieSenseiAnalyzor = SelfieSenseiAnalyzer(delegate: self, with: photos)
+        self.selfieSenseiAnalyzor = SelfieSenseiAnalyzer(delegate: self, with: self.videoURL)
+//        self.selfieSenseiAnalyzor.uploadImagesToServer()
         
     }
 

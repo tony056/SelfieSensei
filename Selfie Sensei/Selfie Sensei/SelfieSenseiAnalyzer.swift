@@ -19,7 +19,7 @@ class SelfieSenseiAnalyzer: NSObject {
     private var imageCount : Int!
     private var uploadedCount = 0
     private var delegate : SelfieSenseiAnalyzerDelegate?
-    
+    private var imageExtractor : ImageExtractor!
     // testing usage
     var storageRef : FIRStorageReference!
 //    var selfieRef : FIRStorageReference!
@@ -36,8 +36,32 @@ class SelfieSenseiAnalyzer: NSObject {
         
     }
     
-    func uploadImagesToServer(){
+    init(delegate : SelfieSenseiAnalyzerDelegate, with videoURL : URL){
+        super.init()
+        self.delegate = delegate
+        self.imageExtractor = ImageExtractor(sourceURL: videoURL)
+//        self.delegate?.showWaitingView(show: true)
+//        self.images = self.imageExtractor.extractFramesFromVideo()
+        dispatchToBackground()
+        
+//        self.imageCount = self.images.count
+    }
+    
+    func dispatchToBackground() {
         self.delegate?.showWaitingView(show: true)
+        self.storageRef = FIRStorage.storage().reference()
+        DispatchQueue.global(qos: .background).async {
+            self.images = self.imageExtractor.extractFramesFromVideo()
+            self.imageCount = self.images.count
+            DispatchQueue.main.async {
+                self.uploadImagesToServer()
+            }
+            
+        }
+    }
+    
+    func uploadImagesToServer(){
+//        self.delegate?.showWaitingView(show: true)
         for i in 0 ..< self.imageCount {
             let date = Date().ticks
             let selfieRef = self.storageRef.child("images/\(date).png")
