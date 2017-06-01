@@ -50,7 +50,6 @@ class SelfieSenseiRecordButton: UIButton {
             self.innerCircle.transform = CGAffineTransform(scaleX: 62.4, y: 62.4)
             self.circleBorder.setAffineTransform(CGAffineTransform(scaleX: 1.352, y: 1.352))
             self.circleBorder.borderWidth = (6 / 1.352)
-            
         }, completion: nil)
     }
     

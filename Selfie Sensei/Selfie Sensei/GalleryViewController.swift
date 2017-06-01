@@ -19,6 +19,16 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.waitingView.stopAnimating()
         }
     }
+    
+    func showImagesToView(images: [UIImage]) {
+        for image in images {
+            let photoViewable : INSPhotoViewable = INSPhoto(image: image, thumbnailImage: image)
+            photos.append(photoViewable)
+        }
+        DispatchQueue.main.async {
+            self.selfiesCollectionView.reloadData()
+        }
+    }
 
     
     @IBOutlet weak var selfiesCollectionView: UICollectionView!
@@ -95,12 +105,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func startImageExtraction() {
-//        self.imageExtractor = ImageExtractor(sourceURL: self.videoURL)
-//        let photos = self.imageExtractor.extractFramesFromVideo()
-//        self.selfieSenseiAnalyzor = SelfieSenseiAnalyzer(delegate: self, with: photos)
         self.selfieSenseiAnalyzor = SelfieSenseiAnalyzer(delegate: self, with: self.videoURL)
-//        self.selfieSenseiAnalyzor.uploadImagesToServer()
-        
     }
 
 }

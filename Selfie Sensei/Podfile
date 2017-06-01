@@ -11,6 +11,7 @@ target 'Selfie Sensei' do
   pod 'NVActivityIndicatorView'
   # pod 'IDMPhotoBrowser'
   pod 'INSPhotoGallery'
+  pod 'SwiftHTTP', '~> 2.0.0'
   target 'Selfie SenseiTests' do
     inherit! :search_paths
     # Pods for testing

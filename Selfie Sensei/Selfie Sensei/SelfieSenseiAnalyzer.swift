@@ -8,10 +8,11 @@
 
 import UIKit
 import FirebaseStorage
-
+import SwiftHTTP
 
 protocol SelfieSenseiAnalyzerDelegate : class {
     func showWaitingView(show: Bool)
+    func showImagesToView(images: [UIImage])
 }
 
 class SelfieSenseiAnalyzer: NSObject {
@@ -20,8 +21,11 @@ class SelfieSenseiAnalyzer: NSObject {
     private var uploadedCount = 0
     private var delegate : SelfieSenseiAnalyzerDelegate?
     private var imageExtractor : ImageExtractor!
+
     // testing usage
     var storageRef : FIRStorageReference!
+    private let uploadURL = "http://35.184.163.253:5000/rank"
+//    private var filePaths : [URL] = []
 //    var selfieRef : FIRStorageReference!
     
     // delegate to control waiting UI
@@ -62,31 +66,66 @@ class SelfieSenseiAnalyzer: NSObject {
     
     func uploadImagesToServer(){
 //        self.delegate?.showWaitingView(show: true)
+        var filePaths : [URL] = []
         for i in 0 ..< self.imageCount {
             let date = Date().ticks
-            let selfieRef = self.storageRef.child("images/\(date).png")
+//            let selfieRef = self.storageRef.child("images/\(date).png")
             let data = UIImagePNGRepresentation(self.images[i])!
-            selfieRef.put(data, metadata: nil, completion: {
-                (metadata, error) in
-                if let error = error {
-                    // error occurred
-                    print("error")
-                    return
-                }
-                self.updateProgress()
-            })
+            let filePath = getDocumentDirectory().appendingPathComponent("\(date).png")
+            try? data.write(to: filePath)
+            filePaths.append(filePath)
         }
+        self.uploadTask(paths: filePaths)
+        
+    }
+    
+    private func uploadTask(paths: [URL]) {
+        print("uploading --- \(paths.count)")
+        var params = [String : NSObject]()
+        for i in 0 ..< paths.count {
+            params["image_\(i)"] = Upload(fileUrl: paths[i])
+        }
+        do {
+//            let opt = try HTTP.POST(uploadURL, parameters: ["file": Upload(fileUrl: paths[0])], headers: [], requestSerializer: nil)
+            let opt = try HTTP.POST(uploadURL, parameters: params, headers: ["header": "value"], requestSerializer: HTTPParameterSerializer())
+            opt.start {
+                response in
+                if let err = response.error {
+                    print("error: \(err.localizedDescription)")
+                    return //also notify app of failure as needed
+                }
+                print("opt finished: \(response.description)")
+//                response.text
+            }
+        } catch let error {
+            print("got an error creating the request: \(error)")
+        }
+        
     }
     
     func updateProgress(){
         self.uploadedCount += 1
-        print("iamge ---- \(self.uploadedCount)")
+        print("image ---- \(self.uploadedCount)")
         if self.uploadedCount == self.imageCount {
             // progress done
             self.delegate?.showWaitingView(show: false)
             self.uploadedCount = 0
+            self.delegate?.showImagesToView(images: self.images)
         }
     }
+    
+//    func updateDone(){
+//        
+//    }
+    
+//    private func uploadImagesTo
+    private func getDocumentDirectory() -> URL {
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentDirectory = path[0]
+        return documentDirectory
+    }
+    
+    
 }
 
 extension Date {
