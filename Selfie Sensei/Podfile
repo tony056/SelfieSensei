@@ -12,6 +12,7 @@ target 'Selfie Sensei' do
   # pod 'IDMPhotoBrowser'
   pod 'INSPhotoGallery'
   pod 'SwiftHTTP', '~> 2.0.0'
+  pod 'SwiftyJSON'
   target 'Selfie SenseiTests' do
     inherit! :search_paths
     # Pods for testing

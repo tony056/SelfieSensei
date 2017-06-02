@@ -9,10 +9,12 @@
 import UIKit
 import FirebaseStorage
 import SwiftHTTP
+import SwiftyJSON
 
 protocol SelfieSenseiAnalyzerDelegate : class {
     func showWaitingView(show: Bool)
     func showImagesToView(images: [UIImage])
+    func showImagesToViewWithScores(results : [(photo: UIImage, score: Double)])
 }
 
 class SelfieSenseiAnalyzer: NSObject {
@@ -96,11 +98,20 @@ class SelfieSenseiAnalyzer: NSObject {
                 }
                 print("opt finished: \(response.description)")
 //                response.text
+                self.uploadDone(response: response.text!)
             }
         } catch let error {
             print("got an error creating the request: \(error)")
         }
         
+    }
+    
+    private func uploadDone(response : String) {
+        let results = self.parseResponse(text: response)
+        self.uploadedCount = 0
+        let sortedResults = sortTheResult(results: results!)
+        self.delegate?.showWaitingView(show: false)
+        self.delegate?.showImagesToViewWithScores(results: sortedResults)
     }
     
     func updateProgress(){
@@ -118,11 +129,34 @@ class SelfieSenseiAnalyzer: NSObject {
 //        
 //    }
     
-//    private func uploadImagesTo
     private func getDocumentDirectory() -> URL {
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentDirectory = path[0]
         return documentDirectory
+    }
+    
+    private func parseResponse(text: String) -> [UIImage : Double]? {
+        if let dataFromString = text.data(using: .utf8, allowLossyConversion: false){
+            let json = JSON(data: dataFromString)
+            var results = [UIImage : Double]()
+            for i in 0 ..< self.imageCount {
+                let score = json[i].double
+                results[self.images[i]] = score
+            }
+            
+            
+            return results
+        }
+        print("Error json parsing")
+        return nil
+    }
+    
+    private func sortTheResult(results : [UIImage : Double]) -> [(UIImage, Double)] {
+        var sortedResults = [(photo: UIImage, score: Double)]()
+        for (key, value) in (Array(results).sorted {$0.1 < $1.1}) {
+            sortedResults.append((key, value))
+        }
+        return sortedResults
     }
     
     
@@ -133,3 +167,4 @@ extension Date {
         return UInt64((self.timeIntervalSince1970 + 62_135_596_800) * 10_000_000)
     }
 }
+

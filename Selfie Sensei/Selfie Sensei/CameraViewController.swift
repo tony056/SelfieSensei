@@ -51,7 +51,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         shouldUseDeviceOrientation = false
         guideLayer = self.guideView.layer
         defaultCamera = .front
-        maximumVideoDuration = 3.0
+        maximumVideoDuration = 6.0
 //        self.registerForNotification()
         
 //        addGuideAndEffects()

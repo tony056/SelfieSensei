@@ -31,7 +31,7 @@ class ImageExtractor: NSObject {
         var frames : [UIImage] = []
         
         var value : Int64 = 0
-        let requiredFramesCount = Int(CMTimeGetSeconds(self.videoLength) * 10)
+        let requiredFramesCount = 30
         let step : Int64 = self.videoLength.value / Int64(requiredFramesCount)
         
         for _ in 0 ..< requiredFramesCount {

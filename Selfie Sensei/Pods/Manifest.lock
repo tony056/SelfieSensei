@@ -22,6 +22,7 @@ PODS:
   - INSPhotoGallery (1.1.0)
   - NVActivityIndicatorView (3.4)
   - SwiftHTTP (2.0.2)
+  - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
   - Firebase/Core
@@ -29,6 +30,7 @@ DEPENDENCIES:
   - INSPhotoGallery
   - NVActivityIndicatorView
   - SwiftHTTP (~> 2.0.0)
+  - SwiftyJSON
 
 SPEC CHECKSUMS:
   Firebase: 5bc34d7b5ff5792e3386c8b28dc6265deeab0da4
@@ -41,7 +43,8 @@ SPEC CHECKSUMS:
   INSPhotoGallery: 81056815e82fb7ee6f271ca017db5985b4f96d0a
   NVActivityIndicatorView: 5754be63ceecd1df8af37d3c088d81872feeb8b8
   SwiftHTTP: faa1a5f7670568ffc9361898229dbe84a6088468
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 1362432f52e8e3cf940bf83e97990dd0409da8c5
+PODFILE CHECKSUM: 3541599263028b707b9075c8064ddd3e1c717241
 
 COCOAPODS: 1.2.0

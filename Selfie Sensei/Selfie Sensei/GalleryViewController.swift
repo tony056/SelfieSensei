@@ -30,6 +30,20 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
     }
 
+    func showImagesToViewWithScores(results: [(photo: UIImage, score: Double)]) {
+        for result in results {
+            let photoViewable : INSPhotoViewable = INSPhoto(image: result.photo, thumbnailImage: result.photo)
+            if let photo = photoViewable as? INSPhoto {
+                photo.attributedTitle = NSAttributedString(string: "The score is \(String(result.score))", attributes: [NSForegroundColorAttributeName: UIColor.white])
+                print("score: \(result.score)")
+                photos.append(photo)
+            }
+            
+        }
+        DispatchQueue.main.async {
+            self.selfiesCollectionView.reloadData()
+        }
+    }
     
     @IBOutlet weak var selfiesCollectionView: UICollectionView!
     private var waitingView : WaitingView!
