@@ -16,6 +16,7 @@ class ImageExtractor: NSObject {
     var videoSource : AVAsset!
     var assetImgGenerator : AVAssetImageGenerator!
     var videoLength : CMTime!
+    private let fixedNum = 30
     
     init(sourceURL : URL) {
         super.init()
@@ -27,11 +28,14 @@ class ImageExtractor: NSObject {
     }
     
     func extractFramesFromVideo() -> [UIImage]{
-        
+        return self.extractFramesFromVideo(requiredFrames: fixedNum)
+    }
+    
+    func extractFramesFromVideo(requiredFrames : Int) -> [UIImage] {
         var frames : [UIImage] = []
         
         var value : Int64 = 0
-        let requiredFramesCount = 30
+        let requiredFramesCount = requiredFrames
         let step : Int64 = self.videoLength.value / Int64(requiredFramesCount)
         
         for _ in 0 ..< requiredFramesCount {
@@ -55,6 +59,21 @@ class ImageExtractor: NSObject {
         self.assetImgGenerator.appliesPreferredTrackTransform = true
         self.assetImgGenerator.requestedTimeToleranceAfter = kCMTimeZero
         self.assetImgGenerator.requestedTimeToleranceBefore = kCMTimeZero
+    }
+    
+    public func extractFramesFromVideoAndApplyFilters() -> [UIImage] {
+        var results = [UIImage]()
+        // extract less frames
+        let sourceFrames = self.extractFramesFromVideo(requiredFrames: 5)
+//        var imageFilter
+        for image in sourceFrames {
+            let imageFilter = SelfieSenseiImageFilter(image: image)
+            let filteredImages = imageFilter.filterSourceImage()
+            results.append(contentsOf: filteredImages)
+        }
+        return results
+        // apply filter to generate more frames
+        // return all frames
     }
     
     

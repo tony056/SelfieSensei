@@ -57,7 +57,8 @@ class SelfieSenseiAnalyzer: NSObject {
         self.delegate?.showWaitingView(show: true)
         self.storageRef = FIRStorage.storage().reference()
         DispatchQueue.global(qos: .background).async {
-            self.images = self.imageExtractor.extractFramesFromVideo()
+//            self.images = self.imageExtractor.extractFramesFromVideo()
+            self.images = self.imageExtractor.extractFramesFromVideoAndApplyFilters()
             self.imageCount = self.images.count
             DispatchQueue.main.async {
                 self.uploadImagesToServer()
