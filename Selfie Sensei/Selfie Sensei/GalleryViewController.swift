@@ -8,6 +8,7 @@
 
 import UIKit
 import INSPhotoGallery
+import Photos
 
 class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SelfieSenseiAnalyzerDelegate {
     func showWaitingView(show: Bool) {
@@ -73,6 +74,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         self.view.addSubview(self.waitingView)
         self.waitingView.isHidden = true
 //        self.startImageExtraction()
+        self.saveVideoToAlbum(videoURL: self.videoURL)
         print("load attribute")
         for photo in photos {
             if let photo = photo as? INSPhoto {
@@ -122,4 +124,16 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         self.selfieSenseiAnalyzor = SelfieSenseiAnalyzer(delegate: self, with: self.videoURL)
     }
 
+    private func saveVideoToAlbum(videoURL : URL) {
+        PHPhotoLibrary.shared().performChanges({
+            print("start saving")
+            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: videoURL)
+        }, completionHandler: {
+            saved, error in
+            if saved {
+                print("saved the video")
+            }
+            
+        })
+    }
 }

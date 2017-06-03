@@ -61,6 +61,7 @@ class SelfieSenseiAnalyzer: NSObject {
             self.imageCount = self.images.count
             DispatchQueue.main.async {
                 self.uploadImagesToServer()
+                
             }
             
         }
@@ -72,13 +73,14 @@ class SelfieSenseiAnalyzer: NSObject {
         for i in 0 ..< self.imageCount {
             let date = Date().ticks
 //            let selfieRef = self.storageRef.child("images/\(date).png")
-            let data = UIImagePNGRepresentation(self.images[i])!
-            let filePath = getDocumentDirectory().appendingPathComponent("\(date).png")
+            let data = UIImageJPEGRepresentation(self.images[i], 0.8)!
+            let filePath = getDocumentDirectory().appendingPathComponent("\(date).jpg")
             try? data.write(to: filePath)
             filePaths.append(filePath)
         }
-        self.uploadTask(paths: filePaths)
-        
+//        self.uploadTask(paths: filePaths)
+        let scores = self.getRuleBaseScore()
+        self.uploadDone(scores: scores)
     }
     
     private func uploadTask(paths: [URL]) {
@@ -114,6 +116,17 @@ class SelfieSenseiAnalyzer: NSObject {
         self.delegate?.showImagesToViewWithScores(results: sortedResults)
     }
     
+    private func uploadDone(scores : [Double]) {
+        self.uploadedCount = 0
+        self.delegate?.showWaitingView(show: false)
+        var results = [(UIImage, Double)]()
+        for i in 0 ..< self.imageCount {
+            results.append((self.images[i], scores[i]))
+        }
+        results = self.sortTopResults(bound: 5, source: results)
+        self.delegate?.showImagesToViewWithScores(results: results)
+    }
+    
     func updateProgress(){
         self.uploadedCount += 1
         print("image ---- \(self.uploadedCount)")
@@ -128,6 +141,16 @@ class SelfieSenseiAnalyzer: NSObject {
 //    func updateDone(){
 //        
 //    }
+    
+    private func getRuleBaseScore() -> [Double] {
+        let faceDetector = FaceDetector()
+        var scores = [Double]()
+        for image in self.images {
+            let score = faceDetector.getScore(photo: image)
+            scores.append(score)
+        }
+        return scores
+    }
     
     private func getDocumentDirectory() -> URL {
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -159,6 +182,13 @@ class SelfieSenseiAnalyzer: NSObject {
         return sortedResults
     }
     
+    private func sortTopResults(bound : Int, source : [(UIImage, Double)]) -> [(UIImage, Double)] {
+//        var results = [(photo: UIImage, score: Double)]()
+        var item = 0
+        let sortedSource = source.sorted(by: {$0.1 > $1.1})
+        let results = sortedSource.prefix(upTo: bound)
+        return Array(results)
+    }
     
 }
 

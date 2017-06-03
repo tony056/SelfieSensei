@@ -49,7 +49,8 @@ class RecordingArrowView: UIView {
         self.viewFrame = CGRect(x: 0.0, y: 0.0, width: windowSize.width, height: windowSize.height)
         
         self.arrowImageView = UIImageView(image: #imageLiteral(resourceName: "iphone"))
-        self.arrowImageView.position = CGPoint(x: 0.0, y: windowSize.height / 2 - self.arrowImageView.height / 2)
+//        self.arrowImageView.position = CGPoint(x: 0.0, y: windowSize.height / 2 - self.arrowImageView.height / 2)
+        self.arrowImageView.frame = CGRect(x: 0.0, y: windowSize.height / 2 - self.arrowImageView.height / 2, width: (self.arrowImageView.image?.width)!, height: (self.arrowImageView.image?.height)!)
         
         self.minXOffset = 0
         self.maxXOffset = windowSize.width - self.arrowImageView.width

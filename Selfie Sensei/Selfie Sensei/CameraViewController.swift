@@ -13,6 +13,7 @@ import SwiftyCam
 import Firebase
 import FirebaseStorage
 import NVActivityIndicatorView
+import Photos
 
 
 class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDelegate{
@@ -204,6 +205,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         self.recordingArrowView.hideCountDownLabel()
 //        let frames = self.extractFramesFromVideo(videoURL: url)
         // go to next view controller
+//        self.saveVideoToAlbum(videoURL: url)
         toGalleryController(url: url)
     }
     
@@ -306,5 +308,7 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
             stopVideoRecording()
         }
     }
+    
+    
 
 }
