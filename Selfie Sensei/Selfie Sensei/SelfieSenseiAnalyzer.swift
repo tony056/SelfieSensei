@@ -58,13 +58,13 @@ class SelfieSenseiAnalyzer: NSObject {
         self.storageRef = FIRStorage.storage().reference()
         DispatchQueue.global(qos: .background).async {
 //            self.images = self.imageExtractor.extractFramesFromVideo()
-            self.images = self.imageExtractor.extractFramesFromVideoAndApplyFilters()
+//            self.images = self.imageExtractor.extractFramesFromVideoAndApplyFilters()
+            let resultsWithType = self.imageExtractor.returnExtractFramesAndFilterNames()
+            self.images = self.getImagesFromTuples(resultsWithType: resultsWithType)
             self.imageCount = self.images.count
             DispatchQueue.main.async {
                 self.uploadImagesToServer()
-                
             }
-            
         }
     }
     
@@ -189,6 +189,14 @@ class SelfieSenseiAnalyzer: NSObject {
         let sortedSource = source.sorted(by: {$0.1 > $1.1})
         let results = sortedSource.prefix(upTo: bound)
         return Array(results)
+    }
+    
+    private func getImagesFromTuples(resultsWithType : [(photo : UIImage, filter : String)]) -> [UIImage] {
+        var photos = [UIImage]()
+        for result in resultsWithType {
+            photos.append(result.photo)
+        }
+        return photos
     }
     
 }

@@ -46,4 +46,13 @@ class SelfieSenseiImageFilter: NSObject {
         }
         return results
     }
+    
+    public func filterSourceImageWithFilters() -> [(photo: UIImage, filter: String)] {
+        var results = [(photo : UIImage, filter : String)]()
+        let photos = self.filterSourceImage()
+        for i in 0 ..< photos.count {
+            results.append((photos[i], self.filters[i % self.filters.count]))
+        }
+        return results
+    }
 }
