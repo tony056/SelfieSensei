@@ -11,6 +11,7 @@
 		493D832E121D5E69EEE4A94E /* Pods_Selfie_SenseiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 829BE130C7F30810DA27B497 /* Pods_Selfie_SenseiUITests.framework */; };
 		802C5BBA1EE0E9AE00FD9485 /* FaceDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802C5BB91EE0E9AE00FD9485 /* FaceDetector.swift */; };
 		802C5BBC1EE36E8D00FD9485 /* SelfieSenseiImageFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802C5BBB1EE36E8C00FD9485 /* SelfieSenseiImageFilter.swift */; };
+		802C5BBE1EE3E95C00FD9485 /* SelfieSenseiScoreSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802C5BBD1EE3E95C00FD9485 /* SelfieSenseiScoreSystem.swift */; };
 		8052CB131ED4B74600D9BAA5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8052CB121ED4B74600D9BAA5 /* GoogleService-Info.plist */; };
 		805B21A51EDCCF6100AE2CBF /* RecordingArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805B21A41EDCCF6100AE2CBF /* RecordingArrowView.swift */; };
 		807785091EDE745B004D3AE5 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807785081EDE745A004D3AE5 /* GalleryViewController.swift */; };
@@ -63,6 +64,7 @@
 		60F25A2FCC7E7F6E790020A0 /* Pods_Selfie_SenseiTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Selfie_SenseiTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		802C5BB91EE0E9AE00FD9485 /* FaceDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceDetector.swift; sourceTree = "<group>"; };
 		802C5BBB1EE36E8C00FD9485 /* SelfieSenseiImageFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieSenseiImageFilter.swift; sourceTree = "<group>"; };
+		802C5BBD1EE3E95C00FD9485 /* SelfieSenseiScoreSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieSenseiScoreSystem.swift; sourceTree = "<group>"; };
 		8052CB121ED4B74600D9BAA5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		805B21A41EDCCF6100AE2CBF /* RecordingArrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingArrowView.swift; sourceTree = "<group>"; };
 		807785081EDE745A004D3AE5 /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				807785141EDFC32B004D3AE5 /* SelfieSenseiRecordButton.swift */,
 				802C5BB91EE0E9AE00FD9485 /* FaceDetector.swift */,
 				802C5BBB1EE36E8C00FD9485 /* SelfieSenseiImageFilter.swift */,
+				802C5BBD1EE3E95C00FD9485 /* SelfieSenseiScoreSystem.swift */,
 			);
 			path = "Selfie Sensei";
 			sourceTree = "<group>";
@@ -528,6 +531,7 @@
 				80C041381ECD0C0500973CE0 /* Selfie_Sensei.xcdatamodeld in Sources */,
 				807785111EDF8DAA004D3AE5 /* WaitingView.swift in Sources */,
 				80E9832D1ECD2155002898D8 /* CameraViewController.swift in Sources */,
+				802C5BBE1EE3E95C00FD9485 /* SelfieSenseiScoreSystem.swift in Sources */,
 				80DBF8561ED510AF0099F2DC /* Utils.swift in Sources */,
 				8077850F1EDF85A2004D3AE5 /* ImageExtractor.swift in Sources */,
 				807785131EDF971C004D3AE5 /* SelfieSenseiAnalyzer.swift in Sources */,

@@ -17,7 +17,8 @@ import Photos
 
 
 class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDelegate{
-    var flipCameraButton : UIButton!
+//    var flipCameraButton : UIButton!
+//    var filterModeButton : UIButton!
     var flashButton : UIButton!
     var captureButton : SelfieSenseiRecordButton!
     var notificationLabel : UILabel!
@@ -309,6 +310,11 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         }
     }
     
+//    private func addFilterModeButton() {
+//        self.filterModeButton = UIButton(frame: CGRect(x: 15.0, y: view.frame.height - 38.0, width: 30.0, height: 28.0))
+//        self.filter
+//        
+//    }
     
 
 }

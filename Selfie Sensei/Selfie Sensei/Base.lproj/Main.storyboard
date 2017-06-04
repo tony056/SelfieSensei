@@ -44,7 +44,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="138.98050974512745"/>
+            <point key="canvasLocation" x="-47" y="88"/>
         </scene>
         <!--Camera View Controller-->
         <scene sceneID="hgq-td-Yis">
@@ -133,7 +133,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="47.5"/>
                                 <items>
                                     <navigationItem title="Top Photos" id="Scx-w4-11Z">
+                                        <barButtonItem key="leftBarButtonItem" title="Item" image="Filter_icon" id="SPf-4c-hlq">
+                                            <color key="tintColor" red="0.36706857349999999" green="0.3215921678" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="camera" id="VxO-8K-9b9">
+                                            <color key="tintColor" red="0.36706857349999999" green="0.3215921678" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <connections>
                                                 <segue destination="gzt-Qd-jAp" kind="presentation" id="sKr-h3-rP4"/>
                                             </connections>
@@ -213,4 +217,7 @@
             <point key="canvasLocation" x="1509.5999999999999" y="-30.134932533733135"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Filter_icon" width="30" height="28"/>
+    </resources>
 </document>

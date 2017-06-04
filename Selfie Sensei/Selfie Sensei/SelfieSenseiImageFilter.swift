@@ -13,7 +13,7 @@ class SelfieSenseiImageFilter: NSObject {
     private var targetImage : CIImage!
     private let openGLContext = EAGLContext(api: .openGLES2)
     private var context : CIContext!
-    private let filters = ["CIPhotoEffectInstant", "CIPhotoEffectChrome", "CIPhotoEffectTransfer", "CIVignette", "CIColorClamp", "CISpeiaTone"]
+    private let filters = ["CIPhotoEffectInstant", "CIPhotoEffectChrome", "CIPhotoEffectTransfer", "CIVignette", "CIColorClamp", "CISepiaTone"]
     
     init(image: UIImage){
         super.init()

@@ -23,10 +23,12 @@ class SelfieSenseiAnalyzer: NSObject {
     private var uploadedCount = 0
     private var delegate : SelfieSenseiAnalyzerDelegate?
     private var imageExtractor : ImageExtractor!
+    private var scoreSystem : SelfieSenseiScoreSystem!
 
     // testing usage
     var storageRef : FIRStorageReference!
-    private let uploadURL = "http://35.184.163.253:5000/rank"
+//    private let uploadURL = "http://35.184.163.253:5000/rank"
+    private let uploadURL = "http://35.184.163.253:5000/all"
 //    private var filePaths : [URL] = []
 //    var selfieRef : FIRStorageReference!
     
@@ -61,6 +63,7 @@ class SelfieSenseiAnalyzer: NSObject {
 //            self.images = self.imageExtractor.extractFramesFromVideoAndApplyFilters()
             let resultsWithType = self.imageExtractor.returnExtractFramesAndFilterNames()
             self.images = self.getImagesFromTuples(resultsWithType: resultsWithType)
+            self.scoreSystem = SelfieSenseiScoreSystem(images: self.images)
             self.imageCount = self.images.count
             DispatchQueue.main.async {
                 self.uploadImagesToServer()
@@ -79,9 +82,9 @@ class SelfieSenseiAnalyzer: NSObject {
             try? data.write(to: filePath)
             filePaths.append(filePath)
         }
-//        self.uploadTask(paths: filePaths)
-        let scores = self.getRuleBaseScore()
-        self.uploadDone(scores: scores)
+        self.uploadTask(paths: filePaths)
+//        let scores = self.getRuleBaseScore()
+//        self.uploadDone(scores: scores)
     }
     
     private func uploadTask(paths: [URL]) {
@@ -110,11 +113,14 @@ class SelfieSenseiAnalyzer: NSObject {
     }
     
     private func uploadDone(response : String) {
-        let results = self.parseResponse(text: response)
+        let resultsFromOnline = self.parseResponse(text: response)
         self.uploadedCount = 0
-        let sortedResults = sortTheResult(results: results!)
+        self.scoreSystem.setUpOnlineScores(scores: resultsFromOnline)
+        self.scoreSystem.setUpLocalScores(scores: self.getRuleBaseScore())
+        let results = self.scoreSystem.getTheFinalScores()
+//        let sortedResults = self.sortTopResults(bound: 30, source: results)
         self.delegate?.showWaitingView(show: false)
-        self.delegate?.showImagesToViewWithScores(results: sortedResults)
+        self.delegate?.showImagesToViewWithScores(results: results)
     }
     
     private func uploadDone(scores : [Double]) {
@@ -139,10 +145,6 @@ class SelfieSenseiAnalyzer: NSObject {
         }
     }
     
-//    func updateDone(){
-//        
-//    }
-    
     private func getRuleBaseScore() -> [Double] {
         let faceDetector = FaceDetector()
         var scores = [Double]()
@@ -159,20 +161,21 @@ class SelfieSenseiAnalyzer: NSObject {
         return documentDirectory
     }
     
-    private func parseResponse(text: String) -> [UIImage : Double]? {
+    private func parseResponse(text: String) -> [[Double]] {
         if let dataFromString = text.data(using: .utf8, allowLossyConversion: false){
             let json = JSON(data: dataFromString)
-            var results = [UIImage : Double]()
+            var results = [[Double]]()
             for i in 0 ..< self.imageCount {
-                let score = json[i].double
-                results[self.images[i]] = score
+                let scores = json[i]
+                let array = [scores[0].double, scores[1].double]
+//                results[self.images[i]] = array as! [Double]
+                results.append(array as! [Double])
             }
-            
             
             return results
         }
         print("Error json parsing")
-        return nil
+        return []
     }
     
     private func sortTheResult(results : [UIImage : Double]) -> [(UIImage, Double)] {
