@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="gzt-Qd-jAp">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -26,9 +27,6 @@
                                 <rect key="frame" x="139" y="268" width="42" height="32"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <state key="normal" title="Selfie"/>
-                                <connections>
-                                    <segue destination="gzt-Qd-jAp" kind="show" id="j7O-lg-e6k"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P4l-Sm-9kY" customClass="RaisedButton">
                                 <rect key="frame" x="138" y="355" width="44" height="30"/>
@@ -94,8 +92,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="sGk-lW-ZFf">
-                                <rect key="frame" x="8" y="18" width="304" height="532"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="sGk-lW-ZFf">
+                                <rect key="frame" x="8" y="76.5" width="304" height="473.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="304" id="Stl-Wi-AHg"/>
@@ -131,23 +129,41 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zhe-2J-qlU">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="47.5"/>
+                                <items>
+                                    <navigationItem title="Top Photos" id="Scx-w4-11Z">
+                                        <barButtonItem key="rightBarButtonItem" systemItem="camera" id="VxO-8K-9b9">
+                                            <connections>
+                                                <segue destination="gzt-Qd-jAp" kind="presentation" id="sKr-h3-rP4"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="zhe-2J-qlU" firstAttribute="centerX" secondItem="oeb-tu-aHc" secondAttribute="centerX" id="2En-ok-Dms"/>
                             <constraint firstAttribute="trailingMargin" secondItem="sGk-lW-ZFf" secondAttribute="trailing" constant="-8" id="3R3-Ff-Gge"/>
+                            <constraint firstItem="sGk-lW-ZFf" firstAttribute="height" secondItem="oeb-tu-aHc" secondAttribute="height" multiplier="10:12" id="CLa-RK-QcN"/>
+                            <constraint firstItem="zhe-2J-qlU" firstAttribute="leading" secondItem="oeb-tu-aHc" secondAttribute="leading" id="Fbi-f9-bwK"/>
                             <constraint firstItem="Z9q-xg-kPU" firstAttribute="top" secondItem="sGk-lW-ZFf" secondAttribute="bottom" constant="18" id="di2-Is-LOY"/>
                             <constraint firstItem="sGk-lW-ZFf" firstAttribute="centerX" secondItem="oeb-tu-aHc" secondAttribute="centerX" id="fys-ax-7D4"/>
-                            <constraint firstItem="sGk-lW-ZFf" firstAttribute="centerY" secondItem="oeb-tu-aHc" secondAttribute="centerY" id="mMP-Qu-kn5"/>
+                            <constraint firstAttribute="trailing" secondItem="zhe-2J-qlU" secondAttribute="trailing" id="ght-Zp-Azm"/>
+                            <constraint firstItem="zhe-2J-qlU" firstAttribute="height" secondItem="oeb-tu-aHc" secondAttribute="height" multiplier="1:12" id="ia0-1x-Zm2"/>
+                            <constraint firstItem="zhe-2J-qlU" firstAttribute="top" secondItem="oeb-tu-aHc" secondAttribute="top" id="sRx-BH-nEh"/>
                             <constraint firstItem="sGk-lW-ZFf" firstAttribute="leading" secondItem="oeb-tu-aHc" secondAttribute="leadingMargin" constant="-8" id="yPc-tz-nyi"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <connections>
                         <outlet property="selfiesCollectionView" destination="sGk-lW-ZFf" id="tSv-vY-xo8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zRU-IJ-w81" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1700.625" y="872.53521126760563"/>
+            <point key="canvasLocation" x="1638.75" y="815.49295774647885"/>
         </scene>
         <!--Camera View Controller-->
         <scene sceneID="FAT-SI-xsk">
