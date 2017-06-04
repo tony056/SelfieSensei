@@ -11,41 +11,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Selfie_Sensei" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZCu-sS-jpb" customClass="RaisedButton">
-                                <rect key="frame" x="139" y="268" width="42" height="32"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                <state key="normal" title="Selfie"/>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P4l-Sm-9kY" customClass="RaisedButton">
-                                <rect key="frame" x="138" y="355" width="44" height="30"/>
-                                <state key="normal" title="Profile"/>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="ZCu-sS-jpb" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Ghi-hi-rrW"/>
-                            <constraint firstItem="P4l-Sm-9kY" firstAttribute="top" secondItem="ZCu-sS-jpb" secondAttribute="bottom" constant="55" id="Oac-5Y-hB5"/>
-                            <constraint firstItem="ZCu-sS-jpb" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Sn0-M6-YLq"/>
-                            <constraint firstItem="P4l-Sm-9kY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ko3-Fs-CXB"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-47" y="88"/>
-        </scene>
         <!--Camera View Controller-->
         <scene sceneID="hgq-td-Yis">
             <objects>
@@ -135,6 +100,9 @@
                                     <navigationItem title="Top Photos" id="Scx-w4-11Z">
                                         <barButtonItem key="leftBarButtonItem" title="Item" image="Filter_icon" id="SPf-4c-hlq">
                                             <color key="tintColor" red="0.36706857349999999" green="0.3215921678" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <connections>
+                                                <action selector="modeSwitchBtn:" destination="zeK-y8-2Zt" id="4VX-q5-ms1"/>
+                                            </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="camera" id="VxO-8K-9b9">
                                             <color key="tintColor" red="0.36706857349999999" green="0.3215921678" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -167,7 +135,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zRU-IJ-w81" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1638.75" y="815.49295774647885"/>
+            <point key="canvasLocation" x="1620" y="774"/>
         </scene>
         <!--Camera View Controller-->
         <scene sceneID="FAT-SI-xsk">

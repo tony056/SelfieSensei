@@ -44,31 +44,42 @@ class SelfieSenseiAnalyzer: NSObject {
         
     }
     
-    init(delegate : SelfieSenseiAnalyzerDelegate, with videoURL : URL){
+    init(delegate : SelfieSenseiAnalyzerDelegate, with videoURL : URL, and mode : Bool){
         super.init()
         self.delegate = delegate
         self.imageExtractor = ImageExtractor(sourceURL: videoURL)
 //        self.delegate?.showWaitingView(show: true)
 //        self.images = self.imageExtractor.extractFramesFromVideo()
-        dispatchToBackground()
+        dispatchToBackground(mode: mode)
         
 //        self.imageCount = self.images.count
     }
     
-    func dispatchToBackground() {
+    func dispatchToBackground(mode : Bool) {
         self.delegate?.showWaitingView(show: true)
         self.storageRef = FIRStorage.storage().reference()
         DispatchQueue.global(qos: .background).async {
 //            self.images = self.imageExtractor.extractFramesFromVideo()
 //            self.images = self.imageExtractor.extractFramesFromVideoAndApplyFilters()
-            let resultsWithType = self.imageExtractor.returnExtractFramesAndFilterNames()
-            self.images = self.getImagesFromTuples(resultsWithType: resultsWithType)
-            self.scoreSystem = SelfieSenseiScoreSystem(images: self.images)
+            if !mode {
+                // angle mode
+                self.images = self.imageExtractor.extractFramesFromVideo()
+            } else {
+                // filter mode
+                let resultsWithType = self.imageExtractor.returnExtractFramesAndFilterNames(frames: self.images)
+                self.images = self.getImagesFromTuples(resultsWithType: resultsWithType)
+            }
             self.imageCount = self.images.count
+            self.scoreSystem = SelfieSenseiScoreSystem(images: self.images)
+            
             DispatchQueue.main.async {
                 self.uploadImagesToServer()
             }
         }
+    }
+    
+    public func getResult(mode : Bool) {
+        self.dispatchToBackground(mode: mode)
     }
     
     func uploadImagesToServer(){
@@ -83,8 +94,6 @@ class SelfieSenseiAnalyzer: NSObject {
             filePaths.append(filePath)
         }
         self.uploadTask(paths: filePaths)
-//        let scores = self.getRuleBaseScore()
-//        self.uploadDone(scores: scores)
     }
     
     private func uploadTask(paths: [URL]) {
@@ -118,9 +127,11 @@ class SelfieSenseiAnalyzer: NSObject {
         self.scoreSystem.setUpOnlineScores(scores: resultsFromOnline)
         self.scoreSystem.setUpLocalScores(scores: self.getRuleBaseScore())
         let results = self.scoreSystem.getTheFinalScores()
-//        let sortedResults = self.sortTopResults(bound: 30, source: results)
+        let sortedResults = self.sortTopResults(bound: 5, source: results)
+        print("sorted results: \(sortedResults)")
+        self.updateImages(source: sortedResults)
         self.delegate?.showWaitingView(show: false)
-        self.delegate?.showImagesToViewWithScores(results: results)
+        self.delegate?.showImagesToViewWithScores(results: sortedResults)
     }
     
     private func uploadDone(scores : [Double]) {
@@ -200,6 +211,14 @@ class SelfieSenseiAnalyzer: NSObject {
             photos.append(result.photo)
         }
         return photos
+    }
+    
+    private func updateImages(source: [(photo : UIImage, scores: Double)]){
+        var newImages = [UIImage]()
+        for s in source {
+            newImages.append(s.photo)
+        }
+        self.images = newImages
     }
     
 }

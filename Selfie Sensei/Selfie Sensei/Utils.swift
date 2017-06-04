@@ -20,4 +20,5 @@ class Utils: NSObject {
     public static let weightOfSelfie = 0.8
     public static let weightOfStateOfArts = 0.1
     public static let weightOfBlur = 1 - weightOfSelfie - weightOfStateOfArts
+    public static let blurThreshold  = 35.0
 }

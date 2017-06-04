@@ -43,7 +43,7 @@ class SelfieSenseiScoreSystem: NSObject {
     }
     
     private func calculateScoresWithWeight(index : Int) -> Double {
-        let score : Double = self.selfieScores[index] * Utils.weightOfSelfie + self.blurScores[index] * Utils.weightOfBlur + self.stateOfArtsScores[index] * Utils.weightOfStateOfArts
+        let score : Double = self.selfieScores[index] * Utils.weightOfSelfie + (self.blurScores[index] - Utils.blurThreshold) * Utils.weightOfBlur + self.stateOfArtsScores[index] * Utils.weightOfStateOfArts
         return (score * 100).rounded() / 100
     }
 }

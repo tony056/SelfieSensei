@@ -11,6 +11,14 @@ import INSPhotoGallery
 import Photos
 
 class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SelfieSenseiAnalyzerDelegate {
+    private var filterMode : Bool = false
+    
+    
+    @IBAction func modeSwitchBtn(_ sender: UIBarButtonItem) {
+        self.filterMode = !self.filterMode
+        self.startImageExtraction(mode: self.filterMode)
+    }
+    
     func showWaitingView(show: Bool) {
         if show {
             self.waitingView.isHidden = false
@@ -22,6 +30,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func showImagesToView(images: [UIImage]) {
+        self.photos.removeAll()
         for image in images {
             let photoViewable : INSPhotoViewable = INSPhoto(image: image, thumbnailImage: image)
             photos.append(photoViewable)
@@ -32,6 +41,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
 
     func showImagesToViewWithScores(results: [(photo: UIImage, score: Double)]) {
+        self.photos.removeAll()
         for result in results {
             let photoViewable : INSPhotoViewable = INSPhoto(image: result.photo, thumbnailImage: result.photo)
             if let photo = photoViewable as? INSPhoto {
@@ -49,19 +59,9 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet weak var selfiesCollectionView: UICollectionView!
     private var waitingView : WaitingView!
     private var imageExtractor : ImageExtractor!
-    private var selfieSenseiAnalyzor : SelfieSenseiAnalyzer!
+    private var selfieSenseiAnalyzor : SelfieSenseiAnalyzer?
     var videoURL : URL!
-    lazy var photos: [INSPhotoViewable] = { return
-    
-    [
-        INSPhoto(imageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/13-3f15416ddd11d38619289335fafd498d.jpg"), thumbnailImageURL: URL(string:"http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg")!)
-//            INSPhoto(imageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/13-3f15416ddd11d38619289335fafd498d.jpg"), thumbnailImage: UIImage(named: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg")!),
-//            INSPhoto(image: UIImage(named: "http://inspace.io/assets/portfolio/thumb/13-3f15416ddd11d38619289335fafd498d.jpg")!, thumbnailImage: UIImage(named: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg")!),
-//            INSPhoto(imageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg"), thumbnailImageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg")),
-//            INSPhoto(imageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg"), thumbnailImageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg")),
-//            INSPhoto(imageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg"), thumbnailImageURL: URL(string: "http://inspace.io/assets/portfolio/thumb/6-d793b947f57cc3df688eeb1d36b04ddb.jpg"))
-        
-    ]}()
+    var photos = [INSPhotoViewable]()
     
     var preprocessingPhotos : [INSPhotoViewable] = []
     
@@ -76,17 +76,12 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
 //        self.startImageExtraction()
         self.saveVideoToAlbum(videoURL: self.videoURL)
         print("load attribute")
-        for photo in photos {
-            if let photo = photo as? INSPhoto {
-                photo.attributedTitle = NSAttributedString(string: "Example caption text\ncaption text", attributes: [NSForegroundColorAttributeName: UIColor.white])
-            }
-        }
         print("done")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.startImageExtraction()
+        self.startImageExtraction(mode: self.filterMode)
     }
 
     override func didReceiveMemoryWarning() {
@@ -120,8 +115,16 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         return photos.count
     }
     
-    func startImageExtraction() {
-        self.selfieSenseiAnalyzor = SelfieSenseiAnalyzer(delegate: self, with: self.videoURL)
+    func startImageExtraction(mode : Bool) {
+        if let analyzer = self.selfieSenseiAnalyzor {
+            analyzer.getResult(mode: mode)
+            
+        } else {
+//            var images = [UIImage]()
+            self.selfieSenseiAnalyzor = SelfieSenseiAnalyzer(delegate: self, with: self.videoURL, and: mode)
+            
+        }
+        
     }
 
     private func saveVideoToAlbum(videoURL : URL) {

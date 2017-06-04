@@ -62,17 +62,11 @@ class FaceDetector: NSObject {
         }
         
         if pointsOnFace == 2 {
-            score += 1
+            score += 0.5
         } else if pointsOnFace == 1 {
             score += 0.8
         }
-        
-//        if face!.hasLeftEyePosition && face!.hasRightEyePosition {
-//            score += 10.0
-//        } else {
-//            score += 1.0
-//        }
-        
+                
         if face!.hasSmile {
             score += 1
         }

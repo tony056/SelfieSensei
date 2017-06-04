@@ -76,9 +76,10 @@ class ImageExtractor: NSObject {
         // return all frames
     }
     
-    public func returnExtractFramesAndFilterNames() -> [(photo: UIImage, filter : String)] {
+    public func returnExtractFramesAndFilterNames(frames : [UIImage]) -> [(photo: UIImage, filter : String)] {
         var results = [(UIImage, String)]()
-        let sourceFrames = self.extractFramesFromVideo(requiredFrames: 5)
+//        let sourceFrames = self.extractFramesFromVideo(requiredFrames: 5)
+        let sourceFrames = frames
         print("source image count: \(sourceFrames.count)")
         for image in sourceFrames {
             let imageFilter = SelfieSenseiImageFilter(image: image)
